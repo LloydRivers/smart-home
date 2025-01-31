@@ -1,5 +1,6 @@
 import { IEvent, IObservable, IObserver } from "../interfaces";
 
+// Example of single responsibility principle
 export abstract class Observable implements IObservable {
   private observers: Set<IObserver> = new Set();
 
