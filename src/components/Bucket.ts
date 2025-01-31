@@ -1,5 +1,5 @@
 import { Observable } from "../base/Observable";
-import { IStorageOperations, IEvent } from "../interfaces";
+import { IStorageOperations } from "../interfaces";
 
 export class Bucket extends Observable implements IStorageOperations {
   private storage: Map<string, any> = new Map();
