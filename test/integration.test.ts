@@ -2,19 +2,23 @@ import { Bucket } from "../src/components/Bucket";
 import { Lambda } from "../src/components/Lambda";
 import { Cloudwatch } from "../src/components/Cloudwatch";
 import { StoreDataCommand } from "../src/commands/StoreDataCommand";
+import { ConsoleLogger } from "../src/utils/Logger";
+import { ILogger } from "../src/interfaces";
 
 describe("Smart Home System Integration", () => {
   it("should handle a complete flow of storing data with monitoring", async () => {
-    const bucket = new Bucket();
-    const lambda = new Lambda();
-    const cloudwatch = new Cloudwatch();
+    const logger: ILogger = new ConsoleLogger();
+    const bucket = new Bucket(logger);
+    const lambda = new Lambda(logger);
+    const cloudwatch = new Cloudwatch(logger);
 
     bucket.subscribe(cloudwatch);
     lambda.subscribe(cloudwatch);
 
-    const command = new StoreDataCommand(bucket, "test-key", {
+    const command = new StoreDataCommand(bucket, logger, "test-key", {
       value: "test-data",
     });
+
     await lambda.executeCommand(command);
 
     const storedData = await bucket.retrieve("test-key");
