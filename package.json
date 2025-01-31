@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "start": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "@types/node": "^22.12.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }
 }
