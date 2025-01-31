@@ -3,7 +3,6 @@ import { IStorageOperations, IEvent } from "../interfaces";
 
 export class Bucket extends Observable implements IStorageOperations {
   private storage: Map<string, any> = new Map();
-  // add a contructor with a name.
   private validateData(data: any): void {
     if (data === null || data === undefined) {
       throw new Error("Invalid data");
