@@ -11,7 +11,6 @@ describe("Smart Home System Integration", () => {
 
     bucket.subscribe(cloudwatch);
     lambda.subscribe(cloudwatch);
-
     const command = new StoreDataCommand(bucket, "test-key", {
       value: "test-data",
     });
@@ -28,10 +27,8 @@ describe("Smart Home System Integration", () => {
     const bucket = new Bucket();
     try {
       const retrievedData = await bucket.retrieve("non-existent-key");
-      console.log(retrievedData);
       expect(retrievedData).toBeUndefined();
     } catch (error) {
-      console.log(error);
       expect(error.message).toBe("No data found for key: non-existent-key");
     }
   });
