@@ -35,3 +35,11 @@ export interface IStorageOperations {
   retrieve(key: string): Promise<any>;
   delete(key: string): Promise<void>;
 }
+// Base interface for all logging operations
+export interface ILogger {
+  log(
+    level: "DEBUG" | "INFO" | "WARNING" | "ERROR",
+    message: string,
+    data?: any
+  ): void;
+}
