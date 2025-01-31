@@ -1,5 +1,5 @@
 import { Observable } from "../base/Observable";
-import { ICommand, IEvent } from "../interfaces";
+import { ICommand } from "../interfaces";
 
 export class Lambda extends Observable {
   private commandHistory: ICommand[] = [];
