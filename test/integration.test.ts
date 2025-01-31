@@ -29,7 +29,8 @@ describe("Smart Home System Integration", () => {
   });
 
   it("should return undefined for missing data", async () => {
-    const bucket = new Bucket();
+    const logger: ILogger = new ConsoleLogger();
+    const bucket = new Bucket(logger);
     try {
       const retrievedData = await bucket.retrieve("non-existent-key");
       console.log(retrievedData);
@@ -41,9 +42,10 @@ describe("Smart Home System Integration", () => {
   });
 
   it("should handle Lambda execution failure gracefully", async () => {
-    const bucket = new Bucket();
-    const lambda = new Lambda();
-    const failingCommand = new StoreDataCommand(bucket, "key", null);
+    const logger: ILogger = new ConsoleLogger();
+    const bucket = new Bucket(logger);
+    const lambda = new Lambda(logger);
+    const failingCommand = new StoreDataCommand(bucket, logger, "key", null);
 
     await expect(lambda.executeCommand(failingCommand)).rejects.toThrow(
       "Invalid data"
@@ -51,9 +53,12 @@ describe("Smart Home System Integration", () => {
   });
 
   it("should execute a command within an acceptable time frame", async () => {
-    const bucket = new Bucket();
-    const lambda = new Lambda();
-    const command = new StoreDataCommand(bucket, "key", { value: "test" });
+    const logger: ILogger = new ConsoleLogger();
+    const bucket = new Bucket(logger);
+    const lambda = new Lambda(logger);
+    const command = new StoreDataCommand(bucket, logger, "key", {
+      value: "test",
+    });
 
     const start = performance.now();
     await lambda.executeCommand(command);
