@@ -4,6 +4,7 @@ export abstract class Observable implements IObservable {
   private observers: Set<IObserver> = new Set();
   private logger: ILogger;
 
+  // An example of dependency injection
   constructor(logger: ILogger) {
     this.logger = logger;
   }
