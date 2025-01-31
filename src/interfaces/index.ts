@@ -37,9 +37,14 @@ export interface IStorageOperations {
 }
 // Base interface for all logging operations
 export interface ILogger {
-  log(
-    level: "DEBUG" | "INFO" | "WARNING" | "ERROR",
-    message: string,
-    data?: any
-  ): void;
+  debug(message: string, data?: any): void;
+  info(message: string, data?: any): void;
+  warn(message: string, data?: any): void;
+  error(message: string, data?: any): void;
+}
+
+export interface IBucket {
+  store(key: string, data: any): Promise<void>;
+  retrieve(key: string): Promise<any>;
+  delete(key: string): Promise<void>;
 }
