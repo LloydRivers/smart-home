@@ -1,37 +1,28 @@
-// raf & mena
-
-// Why have I done this? Well, I am following the AWS CDK official docs. They have a similar structure (I use it in my team).
-
-// I have added comments above each interface. Once read, each comment can be deleted and this will give you a change you can push up to show we are collaborating.
-
-// This represents any event in our system
+// No comments explaining the purpose of the interfaces.
+// Change the Ievent interface to have any.
 export interface IEvent {
-  type: string;
-  timestamp: Date;
+  type: any;
+  timestamp: any;
   payload: any;
 }
 
-// This allows components to subscribe to events
 export interface IObserver {
   update(event: IEvent): void;
 }
 
-// This allows components to emit events
 export interface IObservable {
   subscribe(observer: IObserver): void;
   unsubscribe(observer: IObserver): void;
   notify(event: IEvent): void;
 }
 
-// Commands represent actions that can be executed
 export interface ICommand {
   execute(): Promise<void>;
   undo(): Promise<void>;
 }
 
-// Base interface for all storage operations
 export interface IStorageOperations {
-  store(key: string, data: any): Promise<void>;
-  retrieve(key: string): Promise<any>;
-  delete(key: string): Promise<void>;
+  store(key: any, data: any): Promise<void>;
+  retrieve(key: any): Promise<any>;
+  delete(key: any): Promise<void>;
 }
