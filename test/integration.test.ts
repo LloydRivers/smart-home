@@ -66,7 +66,4 @@ describe("Smart Home System Integration", () => {
 
     expect(end - start).toBeLessThan(200);
   });
-
-  it("could be written by Rafael", async () => {});
-  it("could be written by Mena", async () => {});
 });
