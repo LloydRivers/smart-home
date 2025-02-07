@@ -6,4 +6,13 @@ export class MotionSensor extends Observable {
   getOccupants(): number {
     return this.occupants;
   }
+
+  setOccupants(occupants: number): void {
+    this.occupants = occupants;
+    this.notify({
+      type: "OCCUPANTS_CHANGED",
+      timestamp: new Date(),
+      payload: { occupants },
+    });
+  }
 }
