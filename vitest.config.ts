@@ -2,9 +2,9 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    // Tells Vitest to look for test files in the src directory
+    // Tells Vitest to look for test files in the test and src directories
     // that end with .test.ts or .spec.ts
-    include: ["src/**/*.{test,spec}.ts"],
+    include: ["test/**/*.{test,spec}.ts", "src/**/*.{test,spec}.ts"],
 
     // Sets up the test environment
     environment: "node",
