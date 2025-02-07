@@ -1,4 +1,6 @@
-export class Sprinkler {
+import { Observable } from "../base/Observable";
+
+export class Sprinkler extends Observable {
   private active: boolean = false;
 
   getActive(): boolean {
@@ -7,5 +9,10 @@ export class Sprinkler {
 
   setActive(state: boolean): void {
     this.active = state;
+    this.notify({
+      type: "SPRINKLER_UPDATE",
+      timestamp: new Date(),
+      payload: { action: "active", state },
+    });
   }
 }
