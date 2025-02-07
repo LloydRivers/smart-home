@@ -1,6 +1,6 @@
-import { IObserver, IEvent, ILogger } from "../interfaces";
+import { IObserver, IEvent, ILogger, ICloudwatch } from "../interfaces";
 
-export class Cloudwatch implements IObserver {
+export class Cloudwatch implements IObserver, ICloudwatch {
   private metrics: IEvent[] = [];
   private logger: ILogger;
 
@@ -13,7 +13,7 @@ export class Cloudwatch implements IObserver {
     this.processMetric(event);
   }
 
-  private processMetric(event: IEvent): void {
+  processMetric(event: IEvent): void {
     // Log event details with the logger
     this.logger.info(
       `Received event: [${event.timestamp.toISOString()}] ${event.type}`,
