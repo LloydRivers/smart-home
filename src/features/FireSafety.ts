@@ -1,10 +1,10 @@
-import { Observable } from "../base/Observable";
 import { IEvent, IObserver } from "../interfaces/index";
 
 import { Sprinkler } from "../entities/Sprinkler";
 import { MotionSensor } from "../entities/MotionSensor";
 import { Light } from "../entities/Light";
 import { Door } from "../entities/Door";
+import { SmokeAlarm } from "../entities/SmokeAlarm";
 
 export class FireSafety implements IObserver {
   private sprinklers: Sprinkler[];
@@ -13,7 +13,7 @@ export class FireSafety implements IObserver {
   private lights: Light[];
 
   constructor(
-    smokeAlarm: Observable,
+    smokeAlarm: SmokeAlarm,
     sprinklers: Sprinkler[],
     occupancySensor: MotionSensor,
     doors: Door[],
@@ -23,23 +23,23 @@ export class FireSafety implements IObserver {
     this.occupancySensor = occupancySensor;
     this.doors = doors;
     this.lights = lights;
-
     smokeAlarm.subscribe(this);
   }
-
   update(event: IEvent): void {
-    if (this.occupancySensor.getOccupants() > 0) {
-      this.sprinklers.forEach((sprinkler) => {
-        sprinkler.setActive(true);
+    if (event.type === "SMOKE_DETECTED") {
+      if (this.occupancySensor.getOccupants() > 0) {
+        this.sprinklers.forEach((sprinkler) => {
+          sprinkler.setActive(true);
+        });
+      }
+
+      this.doors.forEach((door) => {
+        door.setLocked(false);
+      });
+
+      this.lights.forEach((light) => {
+        light.setOn(true);
       });
     }
-
-    this.doors.forEach((door) => {
-      door.setLocked(false);
-    });
-
-    this.lights.forEach((light) => {
-      light.setOn(true);
-    });
   }
 }
