@@ -1,10 +1,10 @@
-import { ICommand, ILogger, IBucket } from "../interfaces";
+import { ICommand, ILogger, IStorageOperations } from "../interfaces";
 
 export class StoreDataCommand implements ICommand {
   private previousData?: any;
 
   constructor(
-    private readonly bucket: IBucket,
+    private readonly bucket: IStorageOperations,
     private readonly logger: ILogger,
     private readonly key: string,
     private readonly data: any
