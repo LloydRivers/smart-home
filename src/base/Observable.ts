@@ -2,7 +2,7 @@ import { IEvent, IObservable, IObserver, ILogger } from "../interfaces";
 
 export abstract class Observable implements IObservable {
   private observers: Set<IObserver> = new Set();
-  private logger: ILogger;
+  protected logger: ILogger;
 
   // Dependency Injection for logger
   constructor(logger: ILogger) {
