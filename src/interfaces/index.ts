@@ -42,9 +42,3 @@ export interface ILogger {
   warn(message: string, data?: any): void;
   error(message: string, data?: any): void;
 }
-
-export interface IBucket {
-  store(key: string, data: any): Promise<void>;
-  retrieve(key: string): Promise<any>;
-  delete(key: string): Promise<void>;
-}
