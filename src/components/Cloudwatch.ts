@@ -4,7 +4,6 @@ export class Cloudwatch implements IObserver {
   private metrics: IEvent[] = [];
   private logger: ILogger;
 
-  // Constructor now accepts ILogger
   constructor(logger: ILogger) {
     this.logger = logger;
   }
