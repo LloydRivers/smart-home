@@ -1,10 +1,10 @@
 export class Thermostat {
-  private isActive: boolean;
+  private _isActive: boolean;
   private _temperature: number;
 
   constructor(initialTemperature: number) {
-    this.isActive = false;
-    this.temperature = initialTemperature;
+    this._isActive = false;
+    this._temperature = initialTemperature;
   }
 
   get temperature(): number {
@@ -12,6 +12,18 @@ export class Thermostat {
   }
 
   set temperature(value: number) {
-    this.temperature = value;
+    this._temperature = value;
+  }
+
+  get isActive(): boolean {
+    return this._isActive;
+  }
+
+  activate(): void {
+    this._isActive = true;
+  }
+
+  deactivate(): void {
+    this._isActive = false;
   }
 }
