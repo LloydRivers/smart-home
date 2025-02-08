@@ -1,6 +1,6 @@
-import { Observable } from "../base/Observable";
+import { Publisher } from "../base/Publisher";
 
-export class MotionSensor extends Observable {
+export class MotionSensor extends Publisher {
   private occupants: number = 0;
 
   getOccupants(): number {

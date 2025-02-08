@@ -1,7 +1,7 @@
-import { Observable } from "../base/Observable";
+import { Publisher } from "../base/Publisher";
 import { ILogger } from "../interfaces";
 
-export class SmokeAlarm extends Observable {
+export class SmokeAlarm extends Publisher {
   private smokeDetected: boolean = false;
 
   constructor(logger: ILogger) {

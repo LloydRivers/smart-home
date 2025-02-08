@@ -1,8 +1,8 @@
 import { vi } from "vitest";
-import { Observable } from "../src/base/Observable";
-import { IObserver, ILogger, IEvent } from "../src/interfaces";
+import { Publisher } from "../src/base/Publisher";
+import { ISubscriber, ILogger, IEvent } from "../src/interfaces";
 
-class MockObserver implements IObserver {
+class MockSubscriber implements ISubscriber {
   update(event: IEvent): void {}
 }
 
@@ -13,83 +13,85 @@ class MockLogger implements ILogger {
   error = vi.fn();
 }
 
-class ConcreteObservable extends Observable {
+class ConcreteObservable extends Publisher {
   constructor(logger: ILogger) {
     super(logger);
   }
 }
 
-describe("Observable", () => {
-  let observable: Observable;
+describe("Publisher", () => {
+  let publisher: Publisher;
   let logger: MockLogger;
-  let observer: MockObserver;
+  let subscriber: MockSubscriber;
 
   beforeEach(() => {
     logger = new MockLogger();
-    observable = new ConcreteObservable(logger);
-    observer = new MockObserver();
+    publisher = new ConcreteObservable(logger);
+    subscriber = new MockSubscriber();
   });
 
-  it("should log info when an observer is subscribed", () => {
-    observable.subscribe(observer);
-    expect(logger.info).toHaveBeenCalledWith("Observer subscribed", {
-      observer,
+  it("should log info when an subscriber is subscribed", () => {
+    publisher.subscribe(subscriber);
+    expect(logger.info).toHaveBeenCalledWith("Subscriber subscribed", {
+      subscriber,
     });
   });
 
-  it("should log warn when an observer is already subscribed", () => {
-    observable.subscribe(observer);
-    observable.subscribe(observer);
-    expect(logger.warn).toHaveBeenCalledWith("Observer already subscribed", {
-      observer,
+  it("should log warn when an subscriber is already subscribed", () => {
+    publisher.subscribe(subscriber);
+    publisher.subscribe(subscriber);
+    expect(logger.warn).toHaveBeenCalledWith("Subscriber already subscribed", {
+      subscriber,
     });
   });
 
-  it("should log info when an observer is unsubscribed", () => {
-    observable.subscribe(observer);
-    observable.unsubscribe(observer);
-    expect(logger.info).toHaveBeenCalledWith("Observer unsubscribed", {
-      observer,
+  it("should log info when an subscriber is unsubscribed", () => {
+    publisher.subscribe(subscriber);
+    publisher.unsubscribe(subscriber);
+    expect(logger.info).toHaveBeenCalledWith("Subscriber unsubscribed", {
+      subscriber,
     });
   });
 
-  it("should log warn when an observer is not subscribed", () => {
-    observable.unsubscribe(observer);
-    expect(logger.warn).toHaveBeenCalledWith("Observer not subscribed", {
-      observer,
+  it("should log warn when an subscriber is not subscribed", () => {
+    publisher.unsubscribe(subscriber);
+    expect(logger.warn).toHaveBeenCalledWith("Subscriber not subscribed", {
+      subscriber,
     });
   });
 
-  it("should log warn when there are no observers to notify", () => {
+  it("should log warn when there are no subscribers to notify", () => {
     const event: IEvent = {
       type: "test",
       timestamp: new Date(),
       payload: "test",
     };
-    observable.notify(event);
-    expect(logger.warn).toHaveBeenCalledWith("No observers to notify");
+    publisher.notify(event);
+    expect(logger.warn).toHaveBeenCalledWith("No subscribers to notify");
   });
 
-  it("should log info when notifying observers", () => {
+  it("should log info when notifying subscribers", () => {
     const event: IEvent = {
       type: "test",
       timestamp: new Date(),
       payload: "test",
     };
-    observable.subscribe(observer);
-    observable.notify(event);
-    expect(logger.info).toHaveBeenCalledWith("Notifying observers", { event });
+    publisher.subscribe(subscriber);
+    publisher.notify(event);
+    expect(logger.info).toHaveBeenCalledWith("Notifying subscribers", {
+      event,
+    });
   });
 
-  it("should call update on observers when notifying", () => {
+  it("should call update on subscribers when notifying", () => {
     const event: IEvent = {
       type: "test",
       timestamp: new Date(),
       payload: "test",
     };
-    const updateSpy = vi.spyOn(observer, "update");
-    observable.subscribe(observer);
-    observable.notify(event);
+    const updateSpy = vi.spyOn(subscriber, "update");
+    publisher.subscribe(subscriber);
+    publisher.notify(event);
     expect(updateSpy).toHaveBeenCalledWith(event);
   });
 });

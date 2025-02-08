@@ -1,6 +1,6 @@
-import { Observable } from "../base/Observable";
+import { Publisher } from "../base/Publisher";
 
-export class Sprinkler extends Observable {
+export class Sprinkler extends Publisher {
   private active: boolean = false;
 
   getActive(): boolean {

@@ -1,6 +1,6 @@
-import { Observable } from "../base/Observable";
+import { Publisher } from "../base/Publisher";
 
-export class Light extends Observable {
+export class Light extends Publisher {
   private state: boolean = false;
 
   setOn(state: boolean): void {

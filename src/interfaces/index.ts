@@ -5,14 +5,14 @@ export interface IEvent {
 }
 
 // This allows components to subscribe to events
-export interface IObserver {
+export interface ISubscriber {
   update(event: IEvent): void;
 }
 
 // This allows components to emit events
-export interface IObservable {
-  subscribe(observer: IObserver): void;
-  unsubscribe(observer: IObserver): void;
+export interface IPublisher {
+  subscribe(subscriber: ISubscriber): void;
+  unsubscribe(subscriber: ISubscriber): void;
   notify(event: IEvent): void;
 }
 
@@ -48,14 +48,15 @@ export interface IEventHandler {
 }
 
 export interface ISmokeAlarm {
-  subscribe(observer: IObserver): void;
-  unsubscribe(observer: IObserver): void;
+  subscribe(subscriber: ISubscriber): void;
+  unsubscribe(subscriber: ISubscriber): void;
 }
 
 export interface ILambda {
   executeCommand(command: ICommand): Promise<void>;
   undoLastCommand(): Promise<void>;
 }
+
 export interface ICloudwatch {
   update(event: IEvent): void;
   processMetric(event: IEvent): void;

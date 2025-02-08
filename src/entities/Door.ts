@@ -1,6 +1,6 @@
-import { Observable } from "../base/Observable";
+import { Publisher } from "../base/Publisher";
 
-export class Door extends Observable {
+export class Door extends Publisher {
   private locked: boolean = true;
 
   setLocked(state: boolean): void {
