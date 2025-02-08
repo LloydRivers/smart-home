@@ -111,6 +111,40 @@ describe.only("FireSafety", () => {
 
     expect(storeSpy).toHaveBeenCalled();
   });
+  it("should handle a complete flow of storing data, invoking Lambda, and logging to Cloudwatch", async () => {
+    const logger = new ConsoleLogger();
+    const smokeAlarm = new SmokeAlarm(logger);
+    const bucket = new Bucket(logger);
+    const lambda = new Lambda(logger);
+    const cloudwatch = new Cloudwatch(logger);
+
+    const eventDispatcher = new EventDispatcher();
+    eventDispatcher.registerHandler(new StoreDataInBucketHandler(bucket));
+    eventDispatcher.registerHandler(
+      new InvokeLambdaHandler(lambda, bucket, logger)
+    );
+    eventDispatcher.registerHandler(new LogToCloudwatchHandler(cloudwatch));
+
+    bucket.subscribe(cloudwatch);
+
+    const mockEvent = {
+      type: "SMOKE_DETECTED",
+      timestamp: new Date(),
+      payload: {},
+    };
+
+    const storeSpy = vi.spyOn(bucket, "store");
+    const lambdaSpy = vi.spyOn(lambda, "executeCommand");
+    const cloudwatchSpy = vi.spyOn(cloudwatch, "update");
+
+    const fireSafety = new FireSafety(smokeAlarm, eventDispatcher);
+    fireSafety.update(mockEvent);
+
+    expect(storeSpy).toHaveBeenCalled();
+    expect(lambdaSpy).toHaveBeenCalled();
+    expect(cloudwatchSpy).toHaveBeenCalled();
+  });
+
   it("should invoke Lambda when smoke is detected", () => {
     eventDispatcher.registerHandler(
       new InvokeLambdaHandler(lambda, bucket, logger)
