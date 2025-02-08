@@ -1,11 +1,11 @@
 import {
   IEvent,
-  IObserver,
+  ISubscriber,
   ISmokeAlarm,
   IEventDispatcher,
 } from "../interfaces";
 
-export class FireSafety implements IObserver {
+export class FireSafety implements ISubscriber {
   constructor(
     smokeAlarm: ISmokeAlarm,
     private eventDispatcher: IEventDispatcher
