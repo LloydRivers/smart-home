@@ -1,7 +1,7 @@
-import { Observable } from "../base/Observable";
+import { Publisher } from "../base/Publisher";
 import { IStorageOperations } from "../interfaces";
 
-export class Bucket extends Observable implements IStorageOperations {
+export class Bucket extends Publisher implements IStorageOperations {
   private storage: Map<string, any> = new Map();
 
   private validateData(data: any): void {

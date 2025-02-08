@@ -1,7 +1,7 @@
-import { Observable } from "../base/Observable";
+import { Publisher } from "../base/Publisher";
 import { ICommand } from "../interfaces";
 
-export class Lambda extends Observable {
+export class Lambda extends Publisher {
   private commandHistory: ICommand[] = [];
 
   async executeCommand(command: ICommand): Promise<void> {
