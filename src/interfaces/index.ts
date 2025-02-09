@@ -10,19 +10,6 @@ export interface ISubscriber {
   getName(): string;
 }
 
-// This allows components to emit events
-export interface IPublisher {
-  subscribe(subscriber: ISubscriber): void;
-  unsubscribe(subscriber: ISubscriber): void;
-  notify(event: IEvent): void;
-}
-
-// Commands represent actions that can be executed
-export interface ICommand {
-  execute(): Promise<void>;
-  undo(): Promise<void>;
-}
-
 // Base interface for all storage operations
 export interface IStorageOperations {
   store(key: string, data: any): Promise<void>;
@@ -51,11 +38,6 @@ export interface IEventHandler {
 export interface ISmokeAlarm {
   subscribe(subscriber: ISubscriber): void;
   unsubscribe(subscriber: ISubscriber): void;
-}
-
-export interface ILambda {
-  executeCommand(command: ICommand): Promise<void>;
-  undoLastCommand(): Promise<void>;
 }
 
 export interface ICloudwatch {
