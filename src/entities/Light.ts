@@ -1,21 +1,41 @@
-import { Publisher } from "../base/Publisher";
+import {
+  IEvent,
+  IEventDispatcher,
+  ISmokeAlarm,
+  ISubscriber,
+} from "../interfaces";
 
-export class Light extends Publisher {
-  private state: boolean = false;
+export class Light implements ISubscriber {
+  private isOn: boolean = false;
+  private name: string; // Added name property
 
-  setOn(state: boolean): void {
-    const action = state ? "on" : "off";
-    this.state = state;
-    this.notify({
-      type: "LIGHT_UPDATE",
-      timestamp: new Date(),
-      payload: { action: "on", state },
-    });
-
-    this.logger.info(`Light has been turned ${action}`);
+  constructor(
+    smokeAlarm: ISmokeAlarm,
+    private eventDispatcher: IEventDispatcher,
+    name: string // Pass name as a parameter
+  ) {
+    this.name = name; // Set the name during instantiation
+    smokeAlarm.subscribe(this);
   }
 
-  getOn(): boolean {
-    return this.state;
+  getIsOn(): boolean {
+    return this.isOn;
+  }
+  getName(): string {
+    return this.name;
+  }
+
+  update(event: IEvent): void {
+    if (event.type === "SMOKE_DETECTED") {
+      this.eventDispatcher.dispatchEvent(event);
+    }
+  }
+
+  setIsOn(isOn: boolean): void {
+    this.isOn = isOn;
+    // Log the action with the light's name
+    console.log(
+      `${this.name} light has been ${isOn ? "turned on" : "turned off"}`
+    );
   }
 }

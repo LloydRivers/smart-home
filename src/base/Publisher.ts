@@ -3,11 +3,15 @@ import { IEvent, ISubscriber, ILogger } from "../interfaces";
 export abstract class Publisher {
   private subscribers: Set<ISubscriber> = new Set();
   protected logger: ILogger;
+  name: string;
 
-  constructor(logger: ILogger) {
+  constructor(logger: ILogger, name: string) {
     this.logger = logger;
+    this.name = name;
   }
-
+  getSubscribers(): Set<ISubscriber> {
+    return this.subscribers;
+  }
   subscribe(subscriber: ISubscriber): void {
     if (this.subscribers.has(subscriber)) {
       this.logger.warn("Subscriber already subscribed", { subscriber });
@@ -36,6 +40,7 @@ export abstract class Publisher {
 
     this.logger.info("Notifying subscribers", { event });
     this.subscribers.forEach((subscriber) => {
+      console.log(`Notifying subscriber: ${subscriber}`);
       subscriber.update(event);
     });
   }

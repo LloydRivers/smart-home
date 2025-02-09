@@ -1,8 +1,12 @@
 import { Publisher } from "../base/Publisher";
-import { ICommand } from "../interfaces";
+import { ICommand, ILogger } from "../interfaces";
 
 export class Lambda extends Publisher {
   private commandHistory: ICommand[] = [];
+
+  constructor(logger: ILogger, name: string) {
+    super(logger, name);
+  }
 
   async executeCommand(command: ICommand): Promise<void> {
     try {
@@ -34,5 +38,9 @@ export class Lambda extends Publisher {
         payload: { command },
       });
     }
+  }
+
+  getCommandHistory(): ICommand[] {
+    return this.commandHistory;
   }
 }

@@ -5,7 +5,7 @@ export class SmokeAlarm extends Publisher {
   private smokeDetected: boolean = false;
 
   constructor(logger: ILogger) {
-    super(logger);
+    super(logger, "SmokeAlarm");
   }
 
   detectSmoke(): void {
@@ -13,7 +13,7 @@ export class SmokeAlarm extends Publisher {
     this.logger.warn("Smoke detected! Triggering fire safety systems.");
 
     this.notify({
-      type: "SMOKE_ALARM",
+      type: "SMOKE_DETECTED",
       timestamp: new Date(),
       payload: { action: "detected" },
     });

@@ -1,21 +1,39 @@
-import { Publisher } from "../base/Publisher";
+import {
+  IEvent,
+  ISubscriber,
+  IEventDispatcher,
+  ISmokeAlarm,
+} from "../interfaces";
 
-export class Sprinkler extends Publisher {
+export class Sprinkler implements ISubscriber {
   private active: boolean = false;
+  private name: string;
+
+  constructor(
+    smokeAlarm: ISmokeAlarm,
+    private eventDispatcher: IEventDispatcher,
+    name: string
+  ) {
+    this.name = name;
+    smokeAlarm.subscribe(this);
+  }
 
   getActive(): boolean {
     return this.active;
   }
 
-  setActive(state: boolean): void {
-    const action = state ? "on" : "off";
-    this.active = state;
-    this.notify({
-      type: "SPRINKLER_UPDATE",
-      timestamp: new Date(),
-      payload: { action: "active", state },
-    });
+  getName(): string {
+    return this.name;
+  }
 
-    this.logger.info(`Sprinkler has been turned ${action}`);
+  update(event: IEvent): void {
+    if (event.type === "SMOKE_DETECTED") {
+      console.log(`[INFO] ${this.name} received SMOKE_DETECTED event.`);
+      this.eventDispatcher.dispatchEvent(event);
+    }
+  }
+
+  setActive(active: boolean): void {
+    this.active = active;
   }
 }

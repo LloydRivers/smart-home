@@ -1,164 +1,156 @@
 import { describe, it, expect, vi } from "vitest";
 import { FireSafety } from "../src/features/FireSafety";
 import { ILogger } from "../src/interfaces/index";
-import { Sprinkler } from "../src/entities/Sprinkler";
-import { MotionSensor } from "../src/entities/MotionSensor";
-import { Light } from "../src/entities/Light";
-import { Door } from "../src/entities/Door";
 import { ConsoleLogger } from "../src/utils/Logger";
-import { SmokeAlarm } from "../src/entities/SmokeAlarm";
 import { EventDispatcher } from "../src/event-dispatchers/EventDispatcher";
+
+// Entities
+import {
+  Sprinkler,
+  Door,
+  Light,
+  MotionSensor,
+  SmokeAlarm,
+} from "../src/entities";
+
+// Commands
 import {
   ActivateSprinklersHandler,
-  InvokeLambdaHandler,
-  LogToCloudwatchHandler,
-  StoreDataInBucketHandler,
   TurnOnLightsHandler,
   UnlockDoorsHandler,
-} from "../src/commands/FireSafetyCommand";
-import { Bucket } from "../src/components/Bucket";
-import { Lambda } from "../src/components/Lambda";
-import { Cloudwatch } from "../src/components/Cloudwatch";
+  AlertEmergencyServicesHandler,
+} from "../src/commands";
 
-describe.only("FireSafety", () => {
-  let logger: ILogger;
+describe("FireSafety", () => {
   let smokeAlarm: SmokeAlarm;
-  let sprinklers: Sprinkler[];
-  let doors: Door[];
-  let lights: Light[];
-  let motionSensor: MotionSensor;
-  let bucket: Bucket;
-  let lambda: Lambda;
-  let cloudwatch: Cloudwatch;
   let eventDispatcher: EventDispatcher;
+  let motionSensor: MotionSensor;
+  let logSpy: ReturnType<typeof vi.spyOn>;
+  let warnSpy: ReturnType<typeof vi.spyOn>;
+  let notifySpy: ReturnType<typeof vi.spyOn>;
+
+  const logger: ILogger = new ConsoleLogger();
+
   beforeEach(() => {
-    logger = new ConsoleLogger();
     smokeAlarm = new SmokeAlarm(logger);
-    sprinklers = [new Sprinkler(logger), new Sprinkler(logger)];
-    doors = [new Door(logger), new Door(logger)];
-    lights = [new Light(logger), new Light(logger)];
-    motionSensor = new MotionSensor(logger);
-    bucket = new Bucket(logger);
-    lambda = new Lambda(logger);
-    cloudwatch = new Cloudwatch(logger);
     eventDispatcher = new EventDispatcher();
+    motionSensor = new MotionSensor(logger);
+
+    logSpy = vi.spyOn(logger, "info");
+    warnSpy = vi.spyOn(logger, "warn");
+    notifySpy = vi.spyOn(smokeAlarm, "notify");
   });
-  it("should activate sprinklers when smoke is detected", () => {
-    eventDispatcher.registerHandler(
-      new ActivateSprinklersHandler(sprinklers, motionSensor)
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("should activate all sprinklers when smoke is detected", () => {
+    motionSensor.setOccupants(1);
+
+    const sprinklers = [
+      new Sprinkler(smokeAlarm, eventDispatcher, "Upstairs"),
+      new Sprinkler(smokeAlarm, eventDispatcher, "Downstairs"),
+    ];
+
+    const activateSprinklersHandler = new ActivateSprinklersHandler(
+      sprinklers,
+      motionSensor
     );
-    const fireSafety = new FireSafety(smokeAlarm, eventDispatcher);
+    eventDispatcher.registerHandler(activateSprinklersHandler);
 
-    motionSensor.setOccupants(2);
-    fireSafety.update({
-      type: "SMOKE_DETECTED",
-      timestamp: new Date(),
-      payload: {},
-    });
+    smokeAlarm.detectSmoke();
 
-    expect(sprinklers.every((sprinkler) => sprinkler.getActive())).toBe(true);
-  });
-  it("should unlock doors when smoke is detected", () => {
-    eventDispatcher.registerHandler(new UnlockDoorsHandler(doors));
-    const fireSafety = new FireSafety(smokeAlarm, eventDispatcher);
-
-    fireSafety.update({
-      type: "SMOKE_DETECTED",
-      timestamp: new Date(),
-      payload: {},
-    });
-
-    expect(doors.every((door) => door.getLocked())).toBe(false);
-  });
-  it("should turn on lights when smoke is detected", () => {
-    eventDispatcher.registerHandler(new TurnOnLightsHandler(lights));
-    const fireSafety = new FireSafety(smokeAlarm, eventDispatcher);
-
-    fireSafety.update({
-      type: "SMOKE_DETECTED",
-      timestamp: new Date(),
-      payload: {},
-    });
-
-    expect(lights.every((light) => light.getOn())).toBe(true);
-  });
-  it("should log smoke detection to Cloudwatch", () => {
-    const cloudwatchHandler = new LogToCloudwatchHandler(cloudwatch);
-    eventDispatcher.registerHandler(cloudwatchHandler);
-    const fireSafety = new FireSafety(smokeAlarm, eventDispatcher);
-
-    const logSpy = vi.spyOn(cloudwatch, "processMetric");
-
-    fireSafety.update({
-      type: "SMOKE_DETECTED",
-      timestamp: new Date(),
-      payload: {},
-    });
-
-    expect(logSpy).toHaveBeenCalled();
-  });
-  it("should store data in the bucket when smoke is detected", () => {
-    eventDispatcher.registerHandler(new StoreDataInBucketHandler(bucket));
-    const fireSafety = new FireSafety(smokeAlarm, eventDispatcher);
-
-    const storeSpy = vi.spyOn(bucket, "store");
-
-    fireSafety.update({
-      type: "SMOKE_DETECTED",
-      timestamp: new Date(),
-      payload: {},
-    });
-
-    expect(storeSpy).toHaveBeenCalled();
-  });
-  it("should handle a complete flow of storing data, invoking Lambda, and logging to Cloudwatch", async () => {
-    const logger = new ConsoleLogger();
-    const smokeAlarm = new SmokeAlarm(logger);
-    const bucket = new Bucket(logger);
-    const lambda = new Lambda(logger);
-    const cloudwatch = new Cloudwatch(logger);
-
-    const eventDispatcher = new EventDispatcher();
-    eventDispatcher.registerHandler(new StoreDataInBucketHandler(bucket));
-    eventDispatcher.registerHandler(
-      new InvokeLambdaHandler(lambda, bucket, logger)
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Smoke detected! Triggering fire safety systems."
     );
-    eventDispatcher.registerHandler(new LogToCloudwatchHandler(cloudwatch));
 
-    bucket.subscribe(cloudwatch);
-
-    const mockEvent = {
+    expect(notifySpy).toHaveBeenCalledWith({
       type: "SMOKE_DETECTED",
-      timestamp: new Date(),
-      payload: {},
-    };
-
-    const storeSpy = vi.spyOn(bucket, "store");
-    const lambdaSpy = vi.spyOn(lambda, "executeCommand");
-    const cloudwatchSpy = vi.spyOn(cloudwatch, "update");
-
-    const fireSafety = new FireSafety(smokeAlarm, eventDispatcher);
-    fireSafety.update(mockEvent);
-
-    expect(storeSpy).toHaveBeenCalled();
-    expect(lambdaSpy).toHaveBeenCalled();
-    expect(cloudwatchSpy).toHaveBeenCalled();
-  });
-
-  it("should invoke Lambda when smoke is detected", () => {
-    eventDispatcher.registerHandler(
-      new InvokeLambdaHandler(lambda, bucket, logger)
-    );
-    const fireSafety = new FireSafety(smokeAlarm, eventDispatcher);
-
-    const lambdaSpy = vi.spyOn(lambda, "executeCommand");
-
-    fireSafety.update({
-      type: "SMOKE_DETECTED",
-      timestamp: new Date(),
-      payload: {},
+      timestamp: expect.any(Date),
+      payload: { action: "detected" },
     });
 
-    expect(lambdaSpy).toHaveBeenCalled();
+    sprinklers.forEach((sprinkler) => {
+      expect(sprinkler.getActive()).toBe(true);
+    });
+  });
+
+  it("should turn on all lights when smoke is detected", () => {
+    motionSensor.setOccupants(1);
+
+    const lights = [
+      new Light(smokeAlarm, eventDispatcher, "Upstairs"),
+      new Light(smokeAlarm, eventDispatcher, "Downstairs"),
+    ];
+
+    const turnOnLightsHandler = new TurnOnLightsHandler(lights);
+    eventDispatcher.registerHandler(turnOnLightsHandler);
+
+    smokeAlarm.detectSmoke();
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Smoke detected! Triggering fire safety systems."
+    );
+
+    expect(notifySpy).toHaveBeenCalledWith({
+      type: "SMOKE_DETECTED",
+      timestamp: expect.any(Date),
+      payload: { action: "detected" },
+    });
+
+    lights.forEach((light) => {
+      expect(light.getIsOn()).toBe(true);
+    });
+  });
+
+  it("should unlock all doors when smoke is detected", () => {
+    const doors = [
+      new Door(smokeAlarm, eventDispatcher, logger, "Front Door"),
+      new Door(smokeAlarm, eventDispatcher, logger, "Back Door"),
+    ];
+
+    const unlockDoorsHandler = new UnlockDoorsHandler(doors);
+    eventDispatcher.registerHandler(unlockDoorsHandler);
+
+    smokeAlarm.detectSmoke();
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Smoke detected! Triggering fire safety systems."
+    );
+
+    expect(notifySpy).toHaveBeenCalledWith({
+      type: "SMOKE_DETECTED",
+      timestamp: expect.any(Date),
+      payload: { action: "detected" },
+    });
+
+    doors.forEach((door) => {
+      expect(door.getLocked()).toBe(false);
+    });
+  });
+
+  it("should alert emergency services when smoke is detected", () => {
+    new FireSafety(smokeAlarm, eventDispatcher);
+
+    const alertEmergencyServicesHandler = new AlertEmergencyServicesHandler(
+      logger
+    );
+
+    eventDispatcher.registerHandler(alertEmergencyServicesHandler);
+
+    smokeAlarm.detectSmoke();
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Smoke detected! Triggering fire safety systems."
+    );
+
+    expect(notifySpy).toHaveBeenCalledWith({
+      type: "SMOKE_DETECTED",
+      timestamp: expect.any(Date),
+      payload: { action: "detected" },
+    });
+
+    expect(logSpy).toHaveBeenCalledWith("Alerted emergency services.");
   });
 });

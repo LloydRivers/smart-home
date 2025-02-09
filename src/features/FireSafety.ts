@@ -11,6 +11,7 @@ export class FireSafety implements ISubscriber {
     private eventDispatcher: IEventDispatcher
   ) {
     smokeAlarm.subscribe(this);
+    // We also do lambda.subscribe(this)
   }
 
   update(event: IEvent): void {

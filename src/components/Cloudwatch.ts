@@ -1,11 +1,13 @@
-import { IObserver, IEvent, ILogger, ICloudwatch } from "../interfaces";
+import { ISubscriber, IEvent, ILogger, ICloudwatch } from "../interfaces";
 
-export class Cloudwatch implements IObserver, ICloudwatch {
+export class Cloudwatch implements ISubscriber, ICloudwatch {
   private metrics: IEvent[] = [];
   private logger: ILogger;
+  public name: string; // Add a name property
 
-  constructor(logger: ILogger) {
+  constructor(logger: ILogger, name: string) {
     this.logger = logger;
+    this.name = name; // Assign the name during construction
   }
 
   update(event: IEvent): void {
@@ -14,9 +16,11 @@ export class Cloudwatch implements IObserver, ICloudwatch {
   }
 
   processMetric(event: IEvent): void {
-    // Log event details with the logger
+    // Log event details with the logger, including the Cloudwatch instance name
     this.logger.info(
-      `Received event: [${event.timestamp.toISOString()}] ${event.type}`,
+      `[${this.name}] Received event: [${event.timestamp.toISOString()}] ${
+        event.type
+      }`,
       event.payload
     );
   }

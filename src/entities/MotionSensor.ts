@@ -7,6 +7,10 @@ export class MotionSensor extends Publisher {
     return this.occupants;
   }
 
+  getName(): string {
+    return this.name;
+  }
+
   setOccupants(occupants: number): void {
     this.occupants = occupants;
     this.notify({

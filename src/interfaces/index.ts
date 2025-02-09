@@ -7,6 +7,7 @@ export interface IEvent {
 // This allows components to subscribe to events
 export interface ISubscriber {
   update(event: IEvent): void;
+  getName(): string;
 }
 
 // This allows components to emit events

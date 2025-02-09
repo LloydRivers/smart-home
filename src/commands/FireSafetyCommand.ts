@@ -1,7 +1,4 @@
-import { Door } from "../entities/Door";
-import { Light } from "../entities/Light";
-import { MotionSensor } from "../entities/MotionSensor";
-import { Sprinkler } from "../entities/Sprinkler";
+import { Sprinkler, Light, Door, MotionSensor } from "../entities";
 import {
   ICloudwatch,
   IEvent,
@@ -43,7 +40,7 @@ export class TurnOnLightsHandler implements IEventHandler {
 
   handleEvent(event: IEvent): void {
     if (event.type === "SMOKE_DETECTED") {
-      this.lights.forEach((light) => light.setOn(true));
+      this.lights.forEach((light) => light.setIsOn(true));
     }
   }
 }
@@ -91,6 +88,16 @@ export class LogToCloudwatchHandler implements IEventHandler {
     if (event.type === "SMOKE_DETECTED") {
       this.cloudwatch.update(event);
       console.log("Logged smoke detection event to Cloudwatch.");
+    }
+  }
+}
+
+export class AlertEmergencyServicesHandler implements IEventHandler {
+  constructor(private logger: ILogger) {}
+
+  handleEvent(event: IEvent): void {
+    if (event.type === "SMOKE_DETECTED") {
+      this.logger.info("Alerted emergency services.");
     }
   }
 }
