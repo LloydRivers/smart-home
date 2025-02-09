@@ -1,49 +1,95 @@
+import { vi } from 'vitest';
+import {
+  SmartHomeSystem,
+  TemperatureControl,
+} from '../features/SmartHomeSystem';
+import { IEvent } from '../interfaces';
+import { ConsoleLogger } from '../utils/Logger';
 import { Thermostat } from './Thermostat';
+
+const payload: TemperatureControl = {
+  _isActive: false,
+  _temperature: 29,
+};
+
+const smartHomeSystem = new SmartHomeSystem(new ConsoleLogger(), payload);
 
 describe('Entity: Thermostat', () => {
   it('SHOULD create a new Thermostat instance correctly', () => {
-    const thermostat = new Thermostat(25);
+    const thermostat = new Thermostat(smartHomeSystem);
     expect(thermostat).toBeInstanceOf(Thermostat);
     expect(thermostat).toMatchInlineSnapshot(`
-        Thermostat {
-          "_isActive": false,
-          "_temperature": 25,
-        }
+      Thermostat {
+        "smartHomeSystem": SmartHomeSystem {
+          "_temperatureControl": {
+            "_isActive": false,
+            "_temperature": 29,
+          },
+          "logger": ConsoleLogger {},
+          "observers": Set {
+            Thermostat {
+              "smartHomeSystem": [Circular],
+            },
+            [Circular],
+          },
+        },
+      }
     `);
   });
 
   describe('Methods: ', () => {
-    describe('GETTERS: ', () => {
-      it('temperature: SHOULD return the correct temperature', () => {
-        const thermostat = new Thermostat(30);
-        expect(thermostat.temperature).toEqual(30);
-      });
+    it('setIsActive: SHOULD set the correct temperature-control state', () => {
+      const thermostat = new Thermostat(smartHomeSystem);
 
-      it('isActive: SHOULD return the correct activation state', () => {
-        const thermostat = new Thermostat(30);
-        expect(thermostat.isActive).toEqual(false);
-      });
+      thermostat.setIsActive(true);
+      expect(smartHomeSystem.temperatureControl._isActive).toEqual(true);
+
+      thermostat.setIsActive(false);
+      expect(smartHomeSystem.temperatureControl._isActive).toEqual(false);
     });
 
-    describe('SETTERS: ', () => {
-      it('temperature: SHOULD set the temperature correctly', () => {
-        const thermostat = new Thermostat(30);
-        thermostat.temperature = 19;
-        expect(thermostat.temperature).toEqual(19);
+    it('setTemperature: SHOULD set the correct temperature', () => {
+      const thermostat = new Thermostat(smartHomeSystem);
+
+      thermostat.setTemperature(15);
+      expect(smartHomeSystem.temperatureControl._temperature).toEqual(15);
+    });
+
+    it('display: SHOULD display the correct thermostat info', () => {
+      const consoleSpy = vi.spyOn(console, 'log');
+
+      const thermostat = new Thermostat(smartHomeSystem);
+
+      thermostat.display(payload);
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining(
+          `Thermostat display: Status: OFF, Temperature: 15°C`
+        )
+      );
+    });
+
+    describe('update: ', () => {
+      const thermostat = new Thermostat(smartHomeSystem);
+      const displaySpy = vi.spyOn(thermostat, 'display');
+      const makeEvent = (type: string): IEvent => ({
+        type,
+        timestamp: new Date(),
+        payload,
       });
-    });
 
-    it('activate: SHOULD set the isActive state to true', () => {
-      const thermostat = new Thermostat(20);
-      thermostat.activate();
-      expect(thermostat.isActive).toEqual(true);
-    });
+      it('SHOULD call the display method with the correct param WHEN event is of an appropriate type', () => {
+        const event = makeEvent('TEMPERATURE_CHANGE');
 
-    it('deactivate: SHOULD set the isActive state to true', () => {
-      const thermostat = new Thermostat(20);
-      thermostat.activate(); // make sure the thermostat is active before deactivating it
-      thermostat.deactivate();
-      expect(thermostat.isActive).toEqual(false);
+        thermostat.update(event);
+        expect(displaySpy).toHaveBeenCalledWith(payload);
+      });
+
+      it('SHOULD not call the display method WHEN event is not of an appropriate type', () => {
+        const event = makeEvent('LIGHT_CHANGE');
+
+        thermostat.update(event);
+        expect(displaySpy).not.toHaveBeenCalledWith();
+      });
     });
   });
 });

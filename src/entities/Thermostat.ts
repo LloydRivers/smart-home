@@ -1,29 +1,36 @@
-export class Thermostat {
-  private _isActive: boolean;
-  private _temperature: number;
+import {
+  SmartHomeSystem,
+  TemperatureControl,
+} from '../features/SmartHomeSystem';
+import { IEvent, IObserver } from '../interfaces';
 
-  constructor(initialTemperature: number) {
-    this._isActive = false;
-    this._temperature = initialTemperature;
+export class Thermostat implements IObserver {
+  private smartHomeSystem: SmartHomeSystem;
+
+  constructor(smartHomeSystem: SmartHomeSystem) {
+    this.smartHomeSystem = smartHomeSystem;
+    smartHomeSystem.subscribe(this);
   }
 
-  get temperature(): number {
-    return this._temperature;
+  setIsActive(state: boolean): void {
+    this.smartHomeSystem.isActive = state;
   }
 
-  set temperature(value: number) {
-    this._temperature = value;
+  setTemperature(newTemperature: number): void {
+    this.smartHomeSystem.temperature = newTemperature;
   }
 
-  get isActive(): boolean {
-    return this._isActive;
+  display(payload: TemperatureControl): void {
+    console.log(
+      `Thermostat display: Status: ${
+        payload._isActive ? 'ON' : 'OFF'
+      }, Temperature: ${payload._temperature}°C`
+    );
   }
 
-  activate(): void {
-    this._isActive = true;
-  }
-
-  deactivate(): void {
-    this._isActive = false;
+  update(event: IEvent): void {
+    if (['TEMPERATURE_CHANGE', 'ISACTIVE_CHANGE'].includes(event.type)) {
+      this.display(event.payload);
+    }
   }
 }
