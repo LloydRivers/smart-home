@@ -63,3 +63,8 @@ export interface ICloudwatch {
   processMetric(event: IEvent): void;
   getMetrics(eventType?: string): IEvent[];
 }
+
+export interface IEventBus {
+  subscribe(eventType: string, subscriber: ISubscriber): void;
+  publish(event: IEvent): void;
+}

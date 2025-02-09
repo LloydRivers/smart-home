@@ -14,6 +14,9 @@ export class FireSafety implements ISubscriber {
     // We also do lambda.subscribe(this)
   }
 
+  getName(): string {
+    return "FireSafety";
+  }
   update(event: IEvent): void {
     if (event.type === "SMOKE_DETECTED") {
       this.eventDispatcher.dispatchEvent(event);
