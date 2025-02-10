@@ -3,24 +3,21 @@
   "version": "1.0.0",
   "description": "University Project",
   "main": "index.js",
-  "scripts": {
+ "scripts": {
+    "dev": "ts-node src/index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build:docs": "npx typedoc",
-    "dev": "ts-node src/index.ts",
     "test:coverage": "vitest run --coverage",
-    "prepare": "husky",
+    "test-all": "npm run check-format && npm run check-lint && npm run build",
+    "build:docs": "npx typedoc",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
     "check-lint": "eslint .",
-    "test-all": "npm run check-format && npm run check-lint && npm run build",
+    "prepare": "husky",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.ts": [
-      "prettier --write",
-      "eslint --fix"
-    ]
+    "*.ts": ["prettier --write", "eslint --fix"]
   },
   "keywords": [],
   "author": "",
