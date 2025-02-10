@@ -21,7 +21,7 @@ export class SmartHomeSystem extends Observable {
     this.notify({
       type: 'TEMPERATURE_CHANGE',
       timestamp: new Date(),
-      payload: this.temperatureControl,
+      payload: this.temperatureControl._temperature,
     });
   }
 
@@ -30,7 +30,7 @@ export class SmartHomeSystem extends Observable {
     this.notify({
       type: 'ISACTIVE_CHANGE',
       timestamp: new Date(),
-      payload: this.temperatureControl,
+      payload: this.temperatureControl._isActive,
     });
   }
 

@@ -14,12 +14,18 @@ const payload: TemperatureControl = {
 
 const smartHomeSystem = new SmartHomeSystem(new ConsoleLogger(), payload);
 
+afterEach(() => {
+  vi.clearAllMocks();
+});
+
 describe('Entity: Thermostat', () => {
   it('SHOULD create a new Thermostat instance correctly', () => {
     const thermostat = new Thermostat(smartHomeSystem);
     expect(thermostat).toBeInstanceOf(Thermostat);
     expect(thermostat).toMatchInlineSnapshot(`
       Thermostat {
+        "_isActive": false,
+        "_temperature": 29,
         "smartHomeSystem": SmartHomeSystem {
           "_temperatureControl": {
             "_isActive": false,
@@ -28,6 +34,8 @@ describe('Entity: Thermostat', () => {
           "logger": ConsoleLogger {},
           "observers": Set {
             Thermostat {
+              "_isActive": false,
+              "_temperature": 29,
               "smartHomeSystem": [Circular],
             },
             [Circular],
@@ -60,7 +68,7 @@ describe('Entity: Thermostat', () => {
 
       const thermostat = new Thermostat(smartHomeSystem);
 
-      thermostat.display(payload);
+      thermostat.display();
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining(
           `Thermostat display: Status: OFF, Temperature: 15°C`
@@ -81,14 +89,14 @@ describe('Entity: Thermostat', () => {
         const event = makeEvent('TEMPERATURE_CHANGE');
 
         thermostat.update(event);
-        expect(displaySpy).toHaveBeenCalledWith(payload);
+        expect(displaySpy).toHaveBeenCalled();
       });
 
       it('SHOULD not call the display method WHEN event is not of an appropriate type', () => {
         const event = makeEvent('LIGHT_CHANGE');
 
         thermostat.update(event);
-        expect(displaySpy).not.toHaveBeenCalledWith();
+        expect(displaySpy).not.toHaveBeenCalled();
       });
     });
   });
