@@ -1,16 +1,1 @@
-# Check Prettier standards
-npm run check-format ||
-(
-    echo '❌❌❌ Prettier Check Failed. ❌❌❌';
-    false;
-)
-
-# Check ESLint Standards
-npm run check-lint ||
-(
-        echo '❌❌❌ ESLint Check Failed. ❌❌❌'
-        false; 
-)
-
-# If everything passes... We can commit
-echo '✅✅✅ I am committing this now. ✅✅✅'
+npm run lint-staged 
