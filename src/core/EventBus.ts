@@ -1,7 +1,5 @@
 import { IEvent, ISubscriber, ILogger } from "../interfaces";
 
-// Test for commit
-
 export class EventBus {
   private subscribers: Map<string, ISubscriber[]> = new Map();
   private logger: ILogger;
