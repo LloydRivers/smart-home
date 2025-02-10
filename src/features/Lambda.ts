@@ -1,7 +1,10 @@
 import { IEvent, IEventBus, ISubscriber, ILogger } from "../interfaces";
 
 export class Lambda implements ISubscriber {
-  constructor(private eventBus: IEventBus, private logger: ILogger) {
+  constructor(
+    private eventBus: IEventBus,
+    private logger: ILogger
+  ) {
     this.eventBus.subscribe("SMOKE_DETECTED", this);
   }
 

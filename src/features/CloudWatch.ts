@@ -3,7 +3,10 @@ import { IEvent, IEventBus, ISubscriber, ILogger } from "../interfaces";
 export class CloudWatch implements ISubscriber {
   private metrics: IEvent[] = [];
 
-  constructor(private eventBus: IEventBus, private logger: ILogger) {
+  constructor(
+    private eventBus: IEventBus,
+    private logger: ILogger
+  ) {
     this.eventBus.subscribe("SMOKE_DETECTED", this);
   }
 

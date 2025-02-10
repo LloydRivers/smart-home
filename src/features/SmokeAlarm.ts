@@ -1,7 +1,10 @@
 import { ILogger, IEventBus } from "../interfaces";
 
 export class SmokeAlarm {
-  constructor(private eventBus: IEventBus, private logger: ILogger) {}
+  constructor(
+    private eventBus: IEventBus,
+    private logger: ILogger
+  ) {}
 
   detectSmoke(): void {
     this.logger.info("[SmokeAlarm] Smoke detected! Publishing event...");

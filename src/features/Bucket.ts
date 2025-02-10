@@ -9,7 +9,10 @@ import {
 export class Bucket implements ISubscriber, IStorageOperations {
   private storage: Map<string, any> = new Map();
 
-  constructor(private eventBus: IEventBus, private logger: ILogger) {
+  constructor(
+    private eventBus: IEventBus,
+    private logger: ILogger
+  ) {
     this.eventBus.subscribe("SMOKE_DETECTED", this);
   }
 
