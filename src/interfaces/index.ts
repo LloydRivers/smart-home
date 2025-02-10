@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // raf & mena
 
 // Why have I done this? Well, I am following the AWS CDK official docs. They have a similar structure (I use it in my team).

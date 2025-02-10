@@ -1,4 +1,5 @@
-import { ICommand, ILogger, IBucket } from "../interfaces";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IBucket, ICommand, ILogger } from "../interfaces";
 
 export class StoreDataCommand implements ICommand {
   private previousData?: any;
@@ -14,7 +15,7 @@ export class StoreDataCommand implements ICommand {
     try {
       this.previousData = await this.bucket.retrieve(this.key);
       this.logger.info(`Successfully retrieved data for key "${this.key}"`);
-    } catch (error) {
+    } catch {
       this.logger.warn(`No previous data found for key "${this.key}"`);
       this.previousData = undefined;
     }

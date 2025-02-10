@@ -1,4 +1,4 @@
-import { IObserver, IEvent, ILogger } from "../interfaces";
+import { IEvent, ILogger, IObserver } from "../interfaces";
 
 export class Cloudwatch implements IObserver {
   private metrics: IEvent[] = [];
