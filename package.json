@@ -7,7 +7,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "build:docs": "npx typedoc",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
