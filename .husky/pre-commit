@@ -1,0 +1,2 @@
+echo "🔍 Running lint-staged..."
+npm run lint-staged && echo "✅ Pre-commit checks passed!" || echo "❌ Pre-commit checks failed!"

@@ -43,8 +43,18 @@ export interface ILogger {
   error(message: string, data?: any): void;
 }
 
-export interface IBucket {
-  store(key: string, data: any): Promise<void>;
-  retrieve(key: string): Promise<any>;
-  delete(key: string): Promise<void>;
+export interface ISmokeAlarm {
+  subscribe(subscriber: ISubscriber): void;
+  unsubscribe(subscriber: ISubscriber): void;
+}
+
+export interface ICloudwatch {
+  update(event: IEvent): void;
+  processMetric(event: IEvent): void;
+  getMetrics(eventType?: string): IEvent[];
+}
+
+export interface IEventBus {
+  subscribe(eventType: string, subscriber: ISubscriber): void;
+  publish(event: IEvent): void;
 }
