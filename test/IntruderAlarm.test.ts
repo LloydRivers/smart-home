@@ -1,17 +1,17 @@
-import { EventBus } from "../core/EventBus";
-import { IntruderAlarm } from "../alarms/IntruderAlarm";
+import { EventBus } from "../src/core/EventBus";
+import { IntruderAlarm } from "../src/alarms/IntruderAlarm";
 
 // Devices under test
-import { Light } from "../devices/Light";
-import { Door } from "../devices/Door";
+import { Light } from "../src/devices/Light";
+import { Door } from "../src/devices/Door";
 
 // Cloud
-import { Bucket } from "../cloud/Bucket";
-import { CloudWatch } from "../cloud/CloudWatch";
-import { Lambda } from "../cloud/Lambda";
+import { Bucket } from "../src/cloud/Bucket";
+import { CloudWatch } from "../src/cloud/CloudWatch";
+import { Lambda } from "../src/cloud/Lambda";
 
 // Utility
-import { ConsoleLogger } from "../utils/Logger";
+import { ConsoleLogger } from "../src/utils/Logger";
 import { expect, vi } from "vitest";
 
 // Mocking the logger
