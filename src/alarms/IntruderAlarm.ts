@@ -7,7 +7,7 @@ export class IntruderAlarm {
   ) {}
 
   detectIntruder(): void {
-    this.logger.info("[IntruderAlert] Intruder detected! Publishing event...");
+    this.logger.error("[IntruderAlert] Intruder detected! Publishing event...");
     this.eventBus.publish({
       type: "INTRUDER_ALERT",
       timestamp: new Date(),

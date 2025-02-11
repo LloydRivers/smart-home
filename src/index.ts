@@ -17,8 +17,8 @@ const eventBus = new EventBus(logger);
 
 // Initializing components
 const smokeAlarm = new SmokeAlarm(eventBus, logger);
-const intruderAlert = new IntruderAlarm(eventBus, logger);
-const lambda = new Lambda(logger);
+const intruderAlarm = new IntruderAlarm(eventBus, logger);
+const lambda = new Lambda(logger, eventBus);
 const bucket = new Bucket(logger);
 const cloudWatch = new CloudWatch(logger);
 
@@ -32,20 +32,13 @@ const sprinklers = [
   new Sprinkler("Downstairs", logger),
 ];
 
-const intruderAlertListeners = [
-  ...hallwayLights,
-  ...doors,
-  lambda,
-  bucket,
-  cloudWatch,
-];
+const intruderAlertListeners = [...hallwayLights, ...doors, lambda, cloudWatch];
 
 const alarmAlertListeners = [
   ...hallwayLights,
   ...doors,
   ...sprinklers,
   lambda,
-  bucket,
   cloudWatch,
 ];
 
@@ -56,5 +49,8 @@ intruderAlertListeners.forEach((listener) => {
 alarmAlertListeners.forEach((listener) => {
   eventBus.subscribe("SMOKE_DETECTED", listener);
 });
+// Subscribe the buckets
+eventBus.subscribe("STORE_EVENT_IN_BUCKET", bucket);
+
 smokeAlarm.detectSmoke();
-intruderAlert.detectIntruder();
+intruderAlarm.detectIntruder();

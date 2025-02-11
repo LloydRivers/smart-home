@@ -7,7 +7,7 @@ export class SmokeAlarm {
   ) {}
 
   detectSmoke(): void {
-    this.logger.info("[SmokeAlarm] Smoke detected! Publishing event...");
+    this.logger.error("[SmokeAlarm] Smoke detected! Publishing event...");
     this.eventBus.publish({
       type: "SMOKE_DETECTED",
       timestamp: new Date(),
