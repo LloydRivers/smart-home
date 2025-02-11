@@ -25,16 +25,6 @@ export interface ILogger {
   error(message: string, data?: any): void;
 }
 
-// IEventDispatcher.ts
-export interface IEventDispatcher {
-  dispatchEvent(event: IEvent): void;
-  registerHandler(handler: IEventHandler): void;
-}
-
-export interface IEventHandler {
-  handleEvent(event: IEvent): void;
-}
-
 export interface ISmokeAlarm {
   subscribe(subscriber: ISubscriber): void;
   unsubscribe(subscriber: ISubscriber): void;
