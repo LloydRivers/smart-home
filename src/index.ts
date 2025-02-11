@@ -32,21 +32,29 @@ const sprinklers = [
   new Sprinkler("Downstairs", logger),
 ];
 
-// Simulate Intruder Detection
-hallwayLights.forEach((light) => eventBus.subscribe("INTRUDER_ALERT", light));
-doors.forEach((door) => eventBus.subscribe("INTRUDER_ALERT", door));
-// Skip sprinklers as they should not react to intruder alert
-// sprinklers.forEach((sprinkler) =>
-//   eventBus.subscribe("INTRUDER_ALERT", sprinkler)
-// );
+const intruderAlertListeners = [
+  ...hallwayLights,
+  ...doors,
+  lambda,
+  bucket,
+  cloudWatch,
+];
 
-// subscribe the lambda
-eventBus.subscribe("INTRUDER_ALERT", lambda);
+const alarmAlertListeners = [
+  ...hallwayLights,
+  ...doors,
+  ...sprinklers,
+  lambda,
+  bucket,
+  cloudWatch,
+];
 
-// Subscribe the bucket
-eventBus.subscribe("INTRUDER_ALERT", bucket);
+intruderAlertListeners.forEach((listener) => {
+  eventBus.subscribe("INTRUDER_ALERT", listener);
+});
 
-// Subscribe the cloudWatch
-eventBus.subscribe("INTRUDER_ALERT", cloudWatch);
-
+alarmAlertListeners.forEach((listener) => {
+  eventBus.subscribe("SMOKE_DETECTED", listener);
+});
+smokeAlarm.detectSmoke();
 intruderAlert.detectIntruder();
