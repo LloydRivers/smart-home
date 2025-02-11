@@ -1,3 +1,10 @@
+// raf & mena
+
+// Why have I done this? Well, I am following the AWS CDK official docs. They have a similar structure (I use it in my team).
+
+// I have added comments above each interface. Once read, each comment can be deleted and this will give you a change you can push up to show we are collaborating.
+
+// This represents any event in our system
 export interface IEvent {
   type: string;
   timestamp: Date;
@@ -5,9 +12,21 @@ export interface IEvent {
 }
 
 // This allows components to subscribe to events
-export interface ISubscriber {
+export interface IObserver {
   update(event: IEvent): void;
-  getName(): string;
+}
+
+// This allows components to emit events
+export interface IObservable {
+  subscribe(observer: IObserver): void;
+  unsubscribe(observer: IObserver): void;
+  notify(event: IEvent): void;
+}
+
+// Commands represent actions that can be executed
+export interface ICommand {
+  execute(): Promise<void>;
+  undo(): Promise<void>;
 }
 
 // Base interface for all storage operations
@@ -16,7 +35,6 @@ export interface IStorageOperations {
   retrieve(key: string): Promise<any>;
   delete(key: string): Promise<void>;
 }
-
 // Base interface for all logging operations
 export interface ILogger {
   debug(message: string, data?: any): void;
@@ -25,28 +43,8 @@ export interface ILogger {
   error(message: string, data?: any): void;
 }
 
-// IEventDispatcher.ts
-export interface IEventDispatcher {
-  dispatchEvent(event: IEvent): void;
-  registerHandler(handler: IEventHandler): void;
-}
-
-export interface IEventHandler {
-  handleEvent(event: IEvent): void;
-}
-
-export interface ISmokeAlarm {
-  subscribe(subscriber: ISubscriber): void;
-  unsubscribe(subscriber: ISubscriber): void;
-}
-
-export interface ICloudwatch {
-  update(event: IEvent): void;
-  processMetric(event: IEvent): void;
-  getMetrics(eventType?: string): IEvent[];
-}
-
-export interface IEventBus {
-  subscribe(eventType: string, subscriber: ISubscriber): void;
-  publish(event: IEvent): void;
+export interface IBucket {
+  store(key: string, data: any): Promise<void>;
+  retrieve(key: string): Promise<any>;
+  delete(key: string): Promise<void>;
 }
