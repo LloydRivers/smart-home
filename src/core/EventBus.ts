@@ -8,6 +8,11 @@ export class EventBus {
     this.logger = logger;
   }
 
+  private authCheck(event: IEvent): boolean {
+    const VALID_TOKENS = ["HOME_OWNER"];
+    return VALID_TOKENS.includes(event.token);
+  }
+
   subscribe(eventType: string, subscriber: ISubscriber): void {
     if (!this.subscribers.has(eventType)) {
       this.subscribers.set(eventType, []);
@@ -49,10 +54,5 @@ export class EventBus {
 
   clearSubscriptions(): void {
     this.subscribers = new Map();
-  }
-
-  private authCheck(event: IEvent): boolean {
-    const VALID_TOKENS = ["HOME_OWNER"];
-    return VALID_TOKENS.includes(event.token);
   }
 }
