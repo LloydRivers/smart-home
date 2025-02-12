@@ -15,13 +15,12 @@ export class Light implements ISubscriber {
   }
 
   update(event: IEvent): void {
-    if (!this.isOn) {
-      this.isOn = true;
+    this.logger.info(`[Light] Reacting to ${event.type}`);
+    this.isOn = !this.isOn;
+    if (this.isOn) {
       this.logger.info(`[Light] ${this.name} turned ON due to ${event.type}`);
-    } else {
-      this.logger.info(
-        `[Light] ${this.name} is already ON (event: ${event.type})`
-      );
+      return;
     }
+    this.logger.info(`[Light] ${this.name} turned OFF due to ${event.type}`);
   }
 }

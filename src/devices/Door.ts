@@ -13,13 +13,11 @@ export class Door implements ISubscriber {
   }
 
   update(event: IEvent): void {
+    this.locked = !this.locked;
     if (this.locked) {
-      this.locked = false;
-      this.logger.info(`[${this.getName()}] Unlocked due to ${event.type}`);
-    } else {
-      this.logger.info(
-        `[${this.getName()}] Already unlocked (event: ${event.type})`
-      );
+      this.logger.info(`[${this.getName()}] Locking due to ${event.type}`);
+      return;
     }
+    this.logger.info(`[${this.getName()}] Unlocking due to ${event.type}`);
   }
 }
