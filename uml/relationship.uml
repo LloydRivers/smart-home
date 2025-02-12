@@ -1,0 +1,70 @@
+@startuml
+left to right direction
+!define RECTANGLE class
+!define INTERFACE interface
+
+' EventBus and Subscriber interface
+RECTANGLE EventBus {
+  + subscribe(eventType: string, subscriber: ISubscriber): void
+  + publish(event: IEvent): void
+  - subscribers: Map<string, ISubscriber[]>
+  - eventMappings: Record<string, string>
+}
+note right of EventBus : EventBus manages event subscriptions and notifications.
+
+INTERFACE ISubscriber {
+  + update(event: IEvent): void
+}
+
+' Alarms
+RECTANGLE SmokeAlarm {
+  + detectSmoke(): void
+  - eventBus: EventBus
+}
+note right of SmokeAlarm : SmokeAlarm detects smoke and triggers events to EventBus.
+
+RECTANGLE IntruderAlarm {
+  + detectIntruder(): void
+  - eventBus: EventBus
+}
+note right of IntruderAlarm : IntruderAlarm detects intruders and triggers events to EventBus.
+
+' Devices (Consolidated)
+RECTANGLE Devices {
+  + update(event: IEvent): void
+  - isOn: boolean
+  - locked: boolean
+}
+note right of Devices : Devices react to events from EventBus.
+
+' Cloud Services
+RECTANGLE Lambda {
+  + update(event: IEvent): void
+}
+RECTANGLE CloudWatch {
+  + update(event: IEvent): void
+}
+RECTANGLE Bucket {
+  + update(event: IEvent): void
+}
+note right of Lambda : Cloud services that process/store events.
+note right of CloudWatch : Cloud services that process/store events.
+note right of Bucket : Cloud services that process/store events.
+
+' Logger
+RECTANGLE ConsoleLogger {
+  + info(message: string): void
+  + error(message: string): void
+  + warn(message: string): void
+}
+
+' Relationships
+EventBus --> "1..*" ISubscriber : subscribes
+SmokeAlarm --> EventBus : publishes events
+IntruderAlarm --> EventBus : publishes events
+Devices --> ISubscriber : implements
+Lambda --> ISubscriber : implements
+CloudWatch --> ISubscriber : implements
+Bucket --> ISubscriber : implements
+ConsoleLogger --> EventBus : logs events
+@enduml
