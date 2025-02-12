@@ -74,7 +74,7 @@ describe("Intruder Alarm Tests", () => {
     );
 
     // Verify that all devices received the intruder alert
-    // @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-anyy
     const checkUpdateCalled = (device: any) => {
       expect(device.update).toHaveBeenCalledWith(
         expect.objectContaining({ type: "INTRUDER_ALERT" })
