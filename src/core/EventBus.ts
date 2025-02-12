@@ -4,13 +4,13 @@ export class EventBus {
   private subscribers: Map<string, ISubscriber[]> = new Map();
   private logger: ILogger;
 
-  private eventMappings: Record<string, string> = {
-    SMOKE_DETECTED: "EMERGENCY",
-    INTRUDER_ALERT: "SECURITY",
-  };
-
   constructor(logger: ILogger) {
     this.logger = logger;
+  }
+
+  private authCheck(event: IEvent): boolean {
+    const VALID_TOKENS = ["HOME_OWNER"];
+    return VALID_TOKENS.includes(event.token);
   }
 
   subscribe(eventType: string, subscriber: ISubscriber): void {
@@ -24,18 +24,17 @@ export class EventBus {
   }
 
   publish(event: IEvent): void {
-    this.logger.info(`[EventBus] Publishing event: ${event.type}`);
+    if (!this.authCheck(event)) {
+      this.logger.error(
+        `[Security] Unauthorized event detected: ${event.type}`
+      );
+      return;
+    }
     this.logger.info(
       `[EventBus] Full Event Details:\n${JSON.stringify(event, null, 2)}`
     );
 
     this.notifySubscribers(event.type, event);
-
-    const category = this.eventMappings[event.type];
-    if (category) {
-      this.logger.info(`[EventBus] Also notifying category: ${category}`);
-      this.notifySubscribers(category, event);
-    }
   }
 
   private notifySubscribers(eventType: string, event: IEvent) {
@@ -46,7 +45,7 @@ export class EventBus {
     }
 
     subscribers.forEach((subscriber) => {
-      this.logger.info(
+      this.logger.warn(
         `[EventBus] Notifying ${subscriber.getName()} about ${eventType}`
       );
       subscriber.update(event);

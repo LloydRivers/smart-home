@@ -15,9 +15,9 @@ export class Door implements ISubscriber {
   update(event: IEvent): void {
     this.locked = !this.locked;
     if (this.locked) {
-      this.logger.info(`[${this.getName()}] Locking due to ${event.type}!`);
+      this.logger.info(`[${this.getName()}] Locking due to ${event.type}`);
       return;
     }
-    this.logger.info(`[${this.getName()}] Unlocking due to ${event.type}!`);
+    this.logger.info(`[${this.getName()}] Unlocking due to ${event.type}`);
   }
 }

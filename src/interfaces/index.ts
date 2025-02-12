@@ -2,6 +2,7 @@ export interface IEvent {
   type: string;
   timestamp: Date;
   payload: any;
+  token: string;
 }
 
 // This allows components to subscribe to events

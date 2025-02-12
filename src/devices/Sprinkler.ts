@@ -1,6 +1,8 @@
 import { IEvent, ISubscriber, ILogger } from "../interfaces";
 
 export class Sprinkler implements ISubscriber {
+  private isOn: boolean = false;
+
   constructor(
     private name: string,
     private logger: ILogger
@@ -12,7 +14,14 @@ export class Sprinkler implements ISubscriber {
 
   update(event: IEvent): void {
     if (event.type === "SMOKE_DETECTED") {
-      this.logger.info(`[${this.getName()}] Activating due to smoke!`, event);
+      if (!this.isOn) {
+        this.isOn = true;
+        this.logger.info(`[${this.getName()}] Activated due to ${event.type}`);
+      } else {
+        this.logger.info(
+          `[${this.getName()}] Already activated due to ${event.type}`
+        );
+      }
     }
   }
 }
