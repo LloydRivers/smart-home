@@ -45,6 +45,7 @@ export class Lambda implements ISubscriber {
       type: "STORE_EVENT_IN_BUCKET",
       timestamp: new Date(),
       payload: event.payload,
+      token: event.token,
     });
   }
 }

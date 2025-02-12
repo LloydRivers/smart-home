@@ -18,7 +18,7 @@ import { expect, vi } from "vitest";
 // Create shared instances
 const logger = new ConsoleLogger();
 const eventBus = new EventBus(logger);
-const smokeAlarm = new SmokeAlarm(eventBus, logger);
+const smokeAlarm = new SmokeAlarm(eventBus, logger, "HOME_OWNER");
 
 // Devices & services
 const devices = {

@@ -19,6 +19,12 @@ export class EventBus {
   }
 
   publish(event: IEvent): void {
+    if (!this.authCheck(event)) {
+      this.logger.error(
+        `[Security] Unauthorized event detected: ${event.type}`
+      );
+      return;
+    }
     this.logger.info(
       `[EventBus] Full Event Details:\n${JSON.stringify(event, null, 2)}`
     );
@@ -43,5 +49,10 @@ export class EventBus {
 
   clearSubscriptions(): void {
     this.subscribers = new Map();
+  }
+
+  private authCheck(event: IEvent): boolean {
+    const VALID_TOKENS = ["HOME_OWNER"];
+    return VALID_TOKENS.includes(event.token);
   }
 }

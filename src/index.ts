@@ -16,8 +16,8 @@ const logger = new ConsoleLogger();
 const eventBus = new EventBus(logger);
 
 // Initializing components
-const smokeAlarm = new SmokeAlarm(eventBus, logger);
-const intruderAlarm = new IntruderAlarm(eventBus, logger);
+const smokeAlarm = new SmokeAlarm(eventBus, logger, "HOME_OWNER");
+const intruderAlarm = new IntruderAlarm(eventBus, logger, "HOME_OWNER");
 const lambda = new Lambda(logger, eventBus);
 const bucket = new Bucket(logger);
 const cloudWatch = new CloudWatch(logger);

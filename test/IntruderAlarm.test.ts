@@ -17,8 +17,7 @@ import { expect, vi } from "vitest";
 // Create shared instances
 const logger = new ConsoleLogger();
 const eventBus = new EventBus(logger);
-const intruderAlert = new IntruderAlarm(eventBus, logger);
-
+const intruderAlert = new IntruderAlarm(eventBus, logger, "HOME_OWNER");
 // Devices & services
 const devices = {
   lights: [new Light("Hallway", logger), new Light("Kitchen", logger)],
