@@ -1,0 +1,20 @@
+sequenceDiagram
+Note right of EventBus : EventBus manages event subscriptions and notifications.
+Note right of SmokeAlarm : SmokeAlarm detects smoke and triggers events to EventBus.
+Note right of IntruderAlarm : IntruderAlarm detects intruders and triggers events to EventBus.
+Note right of Light : Devices that react to events from EventBus.
+Note right of Door : Devices that react to events from EventBus.
+Note right of Sprinkler : Devices that react to events from EventBus.
+Note right of Lambda : Cloud services that process/store events.
+Note right of CloudWatch : Cloud services that process/store events.
+Note right of Bucket : Cloud services that process/store events.
+EventBus ->> "1..*" ISubscriber : subscribes
+SmokeAlarm ->> EventBus : publishes events
+IntruderAlarm ->> EventBus : publishes events
+Light ->> ISubscriber : implements
+Door ->> ISubscriber : implements
+Sprinkler ->> ISubscriber : implements
+Lambda ->> ISubscriber : implements
+CloudWatch ->> ISubscriber : implements
+Bucket ->> ISubscriber : implements
+ConsoleLogger ->> EventBus : logs events
