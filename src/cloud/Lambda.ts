@@ -18,7 +18,6 @@ export class Lambda implements ISubscriber {
   update(event: IEvent): void {
     this.logger.info(`[Lambda] Processing event: ${event.type}`);
 
-    // Switch logic to handle different event types
     switch (event.type) {
       case "SMOKE_DETECTED":
         this.logger.error(
