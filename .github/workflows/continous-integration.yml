@@ -15,8 +15,8 @@ jobs:
         cache: 'npm'
     - run: npm ci
 
-    - name: Run lint
-      run: npm run lint
-
     - name: Run Tests
       run: npm test
+
+    - name: Run lint
+      run: npm run lint
