@@ -18,6 +18,9 @@ jobs:
         cache: 'npm'
     - run: npm ci
 
+    - name: Run Tests
+      run: npm test
+
     - name: Build docs
       run: npm run build:docs
 
