@@ -1,7 +1,9 @@
 name: Continous Delivery
 
-# change to merge
-on: [push] 
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
