@@ -18,11 +18,11 @@ jobs:
         cache: 'npm'
     - run: npm ci
 
-    - name: Run Tests
+    - name: Run tests
       run: npm test
-
-    - name: Build docs
-      run: npm run build:docs
 
     - name: Build app
       run: echo "App built"
+
+    - name: Deploy to pre-production
+      run: echo "Deployed to pre-production"
