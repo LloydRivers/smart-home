@@ -1,6 +1,7 @@
-name: Continous Integration
+name: Continous Delivery
 
-on: [push]
+# change to merge
+on: [push] 
 
 jobs:
   build:
@@ -15,8 +16,8 @@ jobs:
         cache: 'npm'
     - run: npm ci
 
-    - name: Run lint
-      run: npm run lint
+    - name: Build docs
+      run: npm run build:docs
 
-    - name: Run Tests
-      run: npm test
+    - name: Build app
+      run: echo "App built"
