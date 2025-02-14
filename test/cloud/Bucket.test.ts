@@ -32,6 +32,8 @@ describe("Bucket", () => {
     const storedData = await bucket.retrieve(expectedKey);
     expect(storedData).toEqual(mockEvent);
 
+    expect(1).toEqual(2);
+
     // Verify logging behavior
     expect(mockLogger.info).toHaveBeenCalledWith(
       "[Bucket] Storing event data",
