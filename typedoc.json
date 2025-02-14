@@ -13,7 +13,7 @@
     "./src/index.ts",
     "./src/utils/Logger.ts"
   ],
-  "out": "doc",
+  "out": "docs",
   "plugin": ["typedoc-umlclass"],
   "umlClassDiagram": {
     "type": "detailed",
