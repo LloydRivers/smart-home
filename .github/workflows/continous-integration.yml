@@ -23,7 +23,7 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     needs: build
-    if: ${{ always() && (needs.build.result, 'failure') }}
+    if: ${{ always() && (needs.build.result == 'failure') }}
     steps: 
       - name: Comment on the PR
         uses:  thollander/actions-comment-pull-request@v3
