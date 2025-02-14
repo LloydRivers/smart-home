@@ -20,8 +20,6 @@ jobs:
 
       - name: Run tests
         run: npm test
-      - name: Build ts-docs
-        run: npm run build:docs
 
       - name: Build app
         run: echo "App built"
