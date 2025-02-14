@@ -6,7 +6,7 @@ import {
 } from "../interfaces";
 
 export class Bucket implements ISubscriber, IStorageOperations {
-  private storage: Map<string, any> = new Map();
+  private storage: Map<string, IEvent> = new Map();
 
   constructor(private logger: ILogger) {}
 
@@ -19,7 +19,7 @@ export class Bucket implements ISubscriber, IStorageOperations {
     this.store(event.timestamp.toISOString(), event);
   }
 
-  async store(key: string, data: any): Promise<void> {
+  async store(key: string, data: IEvent): Promise<void> {
     try {
       this.storage.set(key, data);
       this.logger.info(`[${this.getName()}] Stored data under key: ${key}`);
@@ -32,7 +32,7 @@ export class Bucket implements ISubscriber, IStorageOperations {
     }
   }
 
-  async retrieve(key: string): Promise<any> {
+  async retrieve(key: string): Promise<IEvent | null> {
     try {
       const data = this.storage.get(key);
       if (data) {

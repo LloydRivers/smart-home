@@ -6,6 +6,7 @@ export default tseslint.config(
   tseslint.configs.recommended,
   {
     ignores: [
+      "doc",
       "coverage/**",
       "src/index.ts",
       "src/features/*",
