@@ -59,7 +59,9 @@ describe("Smoke Alarm Tests", () => {
     // Setup mocks and spies
     setupMocks();
   });
-
+  it("expect foo to be bar", () => {
+    expect("foo").toEqual("bar");
+  });
   it("should trigger smoke alarm and notify subscribers", () => {
     // Subscribe listeners
     const smokeAlertListeners = [

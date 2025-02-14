@@ -1,1 +1,0 @@
-expect("foo").toBe("fo");
