@@ -10,19 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js 20.x
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
 
-    - name: Run tests
-      run: npm test
+      - name: Run tests
+        run: npm test
+      - name: Build ts-docs
+        run: npm run build:docs
 
-    - name: Build app
-      run: echo "App built"
+      - name: Build app
+        run: echo "App built"
 
-    - name: Deploy to pre-production
-      run: echo "Deployed to pre-production"
+      - name: Deploy to pre-production
+        run: echo "Deployed to pre-production"
