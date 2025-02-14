@@ -1,6 +1,10 @@
 name: Continous Integration
 
-on: pull_request
+on: push
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   build:
