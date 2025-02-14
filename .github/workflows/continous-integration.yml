@@ -38,4 +38,4 @@ jobs:
         uses: thollander/actions-comment-pull-request@v3
         with:
           message: |
-            🚨 The CI pipeline has failed! Please fix the linting and testing errors.
+            🚨 The CI pipeline has failed! Please fix the linting and testing errors. 
