@@ -21,6 +21,7 @@ jobs:
       run: npm run lint
 
   comment:
+    runs-on: ubuntu-latest
     needs: build
     if: ${{ always() && (needs.build.result, 'failure') }}
     steps: 
