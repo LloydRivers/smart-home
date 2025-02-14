@@ -1,2 +1,6 @@
+echo "🔍 Building docs"
+npm run build:docs
+
+
 echo "🔍 Running lint-staged..."
 npm run lint-staged && echo "✅ Pre-commit checks passed!" || echo "❌ Pre-commit checks failed!"
