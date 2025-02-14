@@ -5,7 +5,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js 20.x
@@ -20,3 +19,13 @@ jobs:
 
     - name: Run lint
       run: npm run lint
+
+  comment:
+    needs: build
+    if: ${{ always() && (needs.build.result, 'failure') }}
+    steps: 
+      - name: Comment on the PR
+        uses:  thollander/actions-comment-pull-request@v3
+        with: 
+          message: |
+            The CI pipeline run has failed. Please fix any linting and testing errors.
