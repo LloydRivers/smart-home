@@ -15,6 +15,8 @@ import { Lambda } from "../../../src/cloud/Lambda";
 import { ConsoleLogger } from "../../../src/utils/Logger";
 import { expect, vi } from "vitest";
 
+import { ISubscriber } from "../../../src/interfaces";
+
 // Create shared instances
 const logger = new ConsoleLogger();
 const eventBus = new EventBus(logger);
@@ -83,7 +85,7 @@ describe("Smoke Alarm Tests", () => {
     );
 
     // Verify that all devices received the smoke detection event
-    const checkUpdateCalled = (device: any) => {
+    const checkUpdateCalled = (device: ISubscriber) => {
       expect(device.update).toHaveBeenCalledWith(
         expect.objectContaining({ type: "SMOKE_DETECTED" })
       );
