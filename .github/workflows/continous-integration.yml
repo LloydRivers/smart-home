@@ -25,9 +25,7 @@ jobs:
     needs: build
     if: ${{ always() && (needs.build.result == 'failure') }}
     steps: 
-      - name: Checkout
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v4
       - name: Comment on the PR
         uses:  thollander/actions-comment-pull-request@v3
         with: 
