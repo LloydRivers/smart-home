@@ -4,16 +4,42 @@
   "description": "University Project",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node src/index.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "build:docs": "npx typedoc",
+    "prepare": "husky",
+    "lint-staged": "lint-staged",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "npm run build:docs"
+    ]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.20.0",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.12.0",
+    "@types/node": "^22.13.1",
+    "@vitest/coverage-v8": "^3.0.4",
+    "eslint": "^9.20.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.5.0",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.27.6",
+    "typedoc-umlclass": "^0.10.1",
     "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0",
     "vitest": "^3.0.4"
+  },
+  "dependencies": {
+    "lint-staged": "^15.4.3"
   }
 }

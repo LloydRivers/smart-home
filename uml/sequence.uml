@@ -1,0 +1,41 @@
+@startuml
+actor User
+
+' Define the objects involved in the interaction
+entity EventBus
+entity SmokeAlarm
+entity IntruderAlarm
+entity Devices
+entity Lambda
+entity CloudWatch
+entity Bucket
+entity ConsoleLogger
+
+' User triggers Smoke Alarm detection
+User -> SmokeAlarm : detectSmoke()
+
+' SmokeAlarm triggers EventBus
+SmokeAlarm -> EventBus : publish(SmokeDetectedEvent)
+
+' EventBus notifies subscribers
+EventBus -> SmokeAlarm : subscribe(SmokeDetectedEvent)
+EventBus -> Devices : update(SmokeDetectedEvent)
+EventBus -> Lambda : update(SmokeDetectedEvent)
+EventBus -> CloudWatch : update(SmokeDetectedEvent)
+EventBus -> Bucket : update(SmokeDetectedEvent)
+EventBus -> ConsoleLogger : log(SmokeDetectedEvent)
+
+' User triggers Intruder Alarm detection
+User -> IntruderAlarm : detectIntruder()
+
+' IntruderAlarm triggers EventBus
+IntruderAlarm -> EventBus : publish(IntruderDetectedEvent)
+
+' EventBus notifies subscribers
+EventBus -> Devices : update(IntruderDetectedEvent)
+EventBus -> Lambda : update(IntruderDetectedEvent)
+EventBus -> CloudWatch : update(IntruderDetectedEvent)
+EventBus -> Bucket : update(IntruderDetectedEvent)
+EventBus -> ConsoleLogger : log(IntruderDetectedEvent)
+
+@enduml
