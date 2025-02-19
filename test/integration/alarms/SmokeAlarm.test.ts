@@ -1,9 +1,9 @@
-import { EventBus } from "../../../src/core/EventBus";
 import { SmokeAlarm } from "../../../src/alarms/SmokeAlarm";
+import { EventBus } from "../../../src/core/EventBus";
 
 // Devices under test
-import { Light } from "../../../src/devices/Light";
 import { Door } from "../../../src/devices/Door";
+import { Light } from "../../../src/devices/Light";
 import { Sprinkler } from "../../../src/devices/Sprinkler";
 
 // Cloud
@@ -12,8 +12,8 @@ import { CloudWatch } from "../../../src/cloud/CloudWatch";
 import { Lambda } from "../../../src/cloud/Lambda";
 
 // Utility
-import { ConsoleLogger } from "../../../src/utils/Logger";
 import { expect, vi } from "vitest";
+import { ConsoleLogger } from "../../../src/utils/Logger";
 
 import { ISubscriber } from "../../../src/interfaces";
 
@@ -39,9 +39,9 @@ const devices = {
 
 // Setup mocks
 const setupMocks = () => {
-  vi.spyOn(logger, "info");
-  vi.spyOn(logger, "error");
-  vi.spyOn(logger, "warn");
+  vi.spyOn(logger, "info").mockImplementation(vi.fn());
+  vi.spyOn(logger, "error").mockImplementation(vi.fn());
+  vi.spyOn(logger, "warn").mockImplementation(vi.fn());
 
   devices.lights.forEach((light) => vi.spyOn(light, "update"));
   devices.doors.forEach((door) => vi.spyOn(door, "update"));

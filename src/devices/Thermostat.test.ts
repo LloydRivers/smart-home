@@ -29,13 +29,6 @@ describe("Entity: Thermostat", () => {
       expect(thermostat.getName()).toEqual("Thermostat (MyThermo)");
     });
 
-    //   it("setTemperature: SHOULD set the correct temperature", () => {
-    //     const thermostat = new Thermostat(smartHomeSystem);
-
-    //     thermostat.setTemperature(15);
-    //     expect(smartHomeSystem.temperatureControl._temperature).toEqual(15);
-    //   });
-
     it("display: SHOULD display the correct thermostat info", () => {
       const consoleSpy = vi.spyOn(console, "log");
 
@@ -89,12 +82,5 @@ describe("Entity: Thermostat", () => {
         "[Thermostat (MyThermo)] is off due to AWAY_MODE"
       );
     });
-
-    // it("SHOULD not call the display method WHEN event is not of an appropriate type", () => {
-    //   const event = makeEvent("LIGHT_CHANGE");
-
-    //   thermostat.update(event);
-    //   expect(displaySpy).not.toHaveBeenCalled();
-    // });
   });
 });
