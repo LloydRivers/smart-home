@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "University Project",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "ts-node src/index.ts",
     "test": "vitest run",
