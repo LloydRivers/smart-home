@@ -1,6 +1,6 @@
+import { Bucket } from "@src/cloud/Bucket";
+import { IEvent, ILogger } from "@src/interfaces";
 import { vi } from "vitest";
-import { Bucket } from "../../src/cloud/Bucket";
-import { IEvent, ILogger } from "../../src/interfaces";
 
 const createMockLogger = () => ({
   debug: vi.fn(),
@@ -17,14 +17,13 @@ describe("Bucket", () => {
     mockLogger = createMockLogger();
     bucket = new Bucket(mockLogger);
   });
-
+  const mockEvent: IEvent = {
+    timestamp: new Date("2024-02-13T12:00:00Z"),
+    type: "TestEvent",
+    payload: { foo: "bar" },
+    token: "test-token",
+  };
   it("should store event data and log the operation", async () => {
-    const mockEvent: IEvent = {
-      timestamp: new Date("2024-02-13T12:00:00Z"),
-      type: "TestEvent",
-      payload: { foo: "bar" },
-      token: "test-token",
-    };
     const expectedKey = mockEvent.timestamp.toISOString();
 
     bucket.update(mockEvent);
@@ -45,14 +44,12 @@ describe("Bucket", () => {
   it("should successfully store and retrieve data", async () => {
     // Arrange
     const testKey = "test-key";
-    const testData = { foo: "bar" };
-
     // Act
-    await bucket.store(testKey, testData);
+    await bucket.store(testKey, mockEvent);
     const retrievedData = await bucket.retrieve(testKey);
 
     // Assert
-    expect(retrievedData).toEqual(testData);
+    expect(retrievedData).toEqual(mockEvent);
     expect(mockLogger.info).toHaveBeenCalledWith(
       "[Bucket] Stored data under key: " + testKey
     );
@@ -74,8 +71,7 @@ describe("Bucket", () => {
 
   it("should successfully delete existing data", async () => {
     const testKey = "test-key";
-    const testData = { foo: "bar" };
-    await bucket.store(testKey, testData);
+    await bucket.store(testKey, mockEvent);
 
     await bucket.delete(testKey);
 

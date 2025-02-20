@@ -1,7 +1,7 @@
-import { describe, beforeEach, it, expect, vi } from "vitest";
-import { Lambda } from "../../src/cloud/Lambda";
-import { EventBus } from "../../src/core/EventBus";
-import { IEvent, ILogger } from "../../src/interfaces";
+import { Lambda } from "@src/cloud/Lambda";
+import { EventBus } from "@src/core/EventBus";
+import { IEvent, ILogger } from "@src/interfaces";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("Lambda", () => {
   const createMockLogger = (): ILogger => ({

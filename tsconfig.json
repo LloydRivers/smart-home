@@ -5,10 +5,14 @@
     "moduleResolution": "NodeNext",
     "strict": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"],
+    }
   },
-  "include": ["src/**/*", "src/index.ts"],
-  "exclude": ["node_modules", "test"]
+  "include": ["src/**/*", "src/index.ts", "test"],
+  "exclude": ["node_modules"]
 }
