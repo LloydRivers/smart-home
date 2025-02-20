@@ -1,7 +1,7 @@
 import { vi } from "vitest";
-import { IEventBus } from "../interfaces";
-import { TimeOfDayPeriod } from "../utils/isWithinAnyPeriod";
-import { SmartHomeApp } from "./SmartHomeApp";
+import { SmartHomeApp } from "../../src/features/SmartHomeApp";
+import { IEventBus } from "../../src/interfaces";
+import { TimeOfDayPeriod } from "../../src/utils/isWithinAnyPeriod";
 
 describe("SmartHomeApp", () => {
   const eventBus: IEventBus = {

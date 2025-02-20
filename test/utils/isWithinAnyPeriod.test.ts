@@ -1,5 +1,8 @@
 import { vi } from "vitest";
-import { isWithinAnyPeriod, TimeOfDayPeriod } from "./isWithinAnyPeriod";
+import {
+  isWithinAnyPeriod,
+  TimeOfDayPeriod,
+} from "../../src/utils/isWithinAnyPeriod";
 
 describe("isWithinAnyPeriod", () => {
   beforeEach(() => {
