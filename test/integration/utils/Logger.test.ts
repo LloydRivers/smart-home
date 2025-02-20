@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ConsoleLogger } from "./Logger";
+import { ConsoleLogger } from "../../../src/utils/Logger";
 
 describe("ConsoleLogger", () => {
   vi.spyOn(console, "debug").mockImplementation(() => {});
