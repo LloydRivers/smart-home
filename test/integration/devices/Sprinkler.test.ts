@@ -3,10 +3,6 @@ import { IEvent } from "@src/interfaces";
 import { ConsoleLogger } from "@src/utils/Logger";
 import { vi } from "vitest";
 
-afterEach(() => {
-  vi.clearAllMocks();
-});
-
 const logger = new ConsoleLogger();
 const smokeDetectedEvent: IEvent = {
   type: "SMOKE_DETECTED",

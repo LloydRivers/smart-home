@@ -3,10 +3,6 @@ import { IEvent } from "@src/interfaces";
 import { ConsoleLogger } from "@src/utils/Logger";
 import { vi } from "vitest";
 
-afterEach(() => {
-  vi.clearAllMocks();
-});
-
 const logger = new ConsoleLogger();
 const thermostat = new Thermostat("MyThermo", logger, 20);
 const loggerInfo = vi.spyOn(logger, "info").mockImplementation(vi.fn());
@@ -30,7 +26,7 @@ describe("Entity: Thermostat", () => {
     });
 
     it("display: SHOULD display the correct thermostat info", () => {
-      const consoleSpy = vi.spyOn(console, "log");
+      const consoleSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
 
       thermostat.display();
       expect(consoleSpy).toHaveBeenCalledWith(
