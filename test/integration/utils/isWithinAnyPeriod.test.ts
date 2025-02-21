@@ -9,10 +9,6 @@ describe("isWithinAnyPeriod", () => {
     vi.useFakeTimers();
   });
 
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   it("SHOULD return true if now is within one of the specified periods", () => {
     const periods: TimeOfDayPeriod[] = [
       { start: { hour: 23, minute: 0 }, end: { hour: 2, minute: 0 } },

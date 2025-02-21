@@ -3,10 +3,6 @@ import { IEvent } from "@src/interfaces";
 import { ConsoleLogger } from "@src/utils/Logger";
 import { vi } from "vitest";
 
-afterEach(() => {
-  vi.clearAllMocks();
-});
-
 const logger = new ConsoleLogger();
 const thermostat = new Thermostat("MyThermo", logger, 20);
 const loggerInfo = vi.spyOn(logger, "info").mockImplementation(vi.fn());
