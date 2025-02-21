@@ -1,7 +1,7 @@
 import { Door } from "@src/devices/Door";
 import { IEvent } from "@src/interfaces";
 import { ConsoleLogger } from "@src/utils/Logger";
-import { describe, expect, it, vi } from "vitest";
+import { vi } from "vitest";
 
 afterEach(() => {
   vi.clearAllMocks();

@@ -1,11 +1,7 @@
 import { EventBus } from "@src/core/EventBus";
 import { IEvent, ISubscriber } from "@src/interfaces";
 import { ConsoleLogger } from "@src/utils/Logger";
-import { describe, expect, it, vi } from "vitest";
-
-afterEach(() => {
-  vi.clearAllMocks();
-});
+import { vi } from "vitest";
 
 const logger = new ConsoleLogger();
 const validEvent: IEvent = {
