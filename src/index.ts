@@ -1,12 +1,13 @@
-import { EventBus } from "./core/EventBus";
+import { IntruderAlarm } from "./alarms/IntruderAlarm";
 import { SmokeAlarm } from "./alarms/SmokeAlarm";
-import { Sprinkler } from "./devices/Sprinkler";
+import { Bucket } from "./cloud/Bucket";
+import { CloudWatch } from "./cloud/CloudWatch";
+import { Lambda } from "./cloud/Lambda";
+import { EventBus } from "./core/EventBus";
 import { Door } from "./devices/Door";
 import { Light } from "./devices/Light";
-import { IntruderAlarm } from "./alarms/IntruderAlarm";
-import { CloudWatch } from "./cloud/CloudWatch";
-import { Bucket } from "./cloud/Bucket";
-import { Lambda } from "./cloud/Lambda";
+import { Sprinkler } from "./devices/Sprinkler";
+import { Thermostat } from "./devices/Thermostat";
 import { ConsoleLogger } from "./utils/Logger";
 
 // Create an instance of your logger
@@ -31,6 +32,7 @@ const sprinklers = [
   new Sprinkler("Upstairs", logger),
   new Sprinkler("Downstairs", logger),
 ];
+const thermostats = [new Thermostat("New thermostat", logger, 25)];
 
 const intruderAlertListeners = [...hallwayLights, ...doors, lambda, cloudWatch];
 
@@ -42,12 +44,20 @@ const alarmAlertListeners = [
   cloudWatch,
 ];
 
+const smartHomeAppListeners = [...thermostats];
+
 intruderAlertListeners.forEach((listener) => {
   eventBus.subscribe("INTRUDER_ALERT", listener);
 });
 
 alarmAlertListeners.forEach((listener) => {
   eventBus.subscribe("SMOKE_DETECTED", listener);
+});
+
+smartHomeAppListeners.forEach((listener) => {
+  eventBus.subscribe("BED_TIME_MODE", listener);
+  eventBus.subscribe("COMFORT_MODE", listener);
+  eventBus.subscribe("AWAY_MODE", listener);
 });
 // Subscribe the buckets
 eventBus.subscribe("STORE_EVENT_IN_BUCKET", bucket);

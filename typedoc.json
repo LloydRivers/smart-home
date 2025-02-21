@@ -9,6 +9,8 @@
     "./src/devices/Door.ts",
     "./src/devices/Light.ts",
     "./src/devices/Sprinkler.ts",
+    "./src/devices/Thermostat.ts",
+    "./src/features/SmartHomeApp.ts",
     "./src/interfaces/index.ts",
     "./src/index.ts",
     "./src/utils/Logger.ts"
@@ -69,5 +71,6 @@
         }
       }
     }
-  }
+  },
+  "tsconfig": "tsconfig.json",
 }
