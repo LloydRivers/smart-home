@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "University Project",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "npx tsx src/index.ts",
     "test": "vitest run",
