@@ -1,5 +1,5 @@
-import { CloudWatch } from "../../src/cloud/CloudWatch";
-import { IEvent, ILogger } from "../../src/interfaces";
+import { CloudWatch } from "@src/cloud/CloudWatch";
+import { IEvent, ILogger } from "@src/interfaces";
 import { vi } from "vitest";
 
 describe("CloudWatch", () => {

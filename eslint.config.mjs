@@ -12,6 +12,7 @@ export default tseslint.config(
       "src/features/*",
       "src/interfaces/index.ts",
       "src/test/*",
+      "dist/",
     ],
   }
 );

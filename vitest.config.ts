@@ -1,3 +1,5 @@
+import path from "path";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -16,7 +18,15 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "html"],
-      exclude: ["node_modules/"],
+      exclude: [
+        "node_modules/",
+        "*.config.*",
+        "docs/*",
+        "src/interfaces/*",
+        "src/index.ts",
+      ],
     },
+    setupFiles: path.resolve(__dirname, "./test/setupTests.ts"),
   },
+  plugins: [tsconfigPaths()],
 });
