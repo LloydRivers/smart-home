@@ -1,18 +1,18 @@
-import { IntruderAlarm } from "../../../src/alarms/IntruderAlarm";
-import { EventBus } from "../../../src/core/EventBus";
+import { IntruderAlarm } from "@src/alarms/IntruderAlarm";
+import { EventBus } from "@src/core/EventBus";
 
 // Devices under test
-import { Door } from "../../../src/devices/Door";
-import { Light } from "../../../src/devices/Light";
+import { Door } from "@src/devices/Door";
+import { Light } from "@src/devices/Light";
 
 // Cloud
-import { Bucket } from "../../../src/cloud/Bucket";
-import { CloudWatch } from "../../../src/cloud/CloudWatch";
-import { Lambda } from "../../../src/cloud/Lambda";
+import { Bucket } from "@src/cloud/Bucket";
+import { CloudWatch } from "@src/cloud/CloudWatch";
+import { Lambda } from "@src/cloud/Lambda";
 
 // Utility
+import { ConsoleLogger } from "@src/utils/Logger";
 import { expect, vi } from "vitest";
-import { ConsoleLogger } from "../../../src/utils/Logger";
 
 // Create shared instances
 const logger = new ConsoleLogger();

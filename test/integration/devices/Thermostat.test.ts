@@ -1,7 +1,7 @@
+import { Thermostat } from "@src/devices/Thermostat";
+import { IEvent } from "@src/interfaces";
+import { ConsoleLogger } from "@src/utils/Logger";
 import { vi } from "vitest";
-import { Thermostat } from "../../src/devices/Thermostat";
-import { IEvent } from "../../src/interfaces";
-import { ConsoleLogger } from "../../src/utils/Logger";
 
 afterEach(() => {
   vi.clearAllMocks();

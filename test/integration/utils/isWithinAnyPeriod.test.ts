@@ -1,8 +1,8 @@
-import { vi } from "vitest";
 import {
   isWithinAnyPeriod,
   TimeOfDayPeriod,
-} from "../../src/utils/isWithinAnyPeriod";
+} from "@src/utils/isWithinAnyPeriod";
+import { vi } from "vitest";
 
 describe("isWithinAnyPeriod", () => {
   beforeEach(() => {
