@@ -73,5 +73,6 @@
       }
     }
   },
-  "tsconfig": "tsconfig.json"
+  "tsconfig": "tsconfig.json",
+  "exclude": ["./docs/assets/**/*.js"]
 }
