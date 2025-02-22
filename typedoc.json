@@ -13,6 +13,7 @@
     "./src/features/SmartHomeApp.ts",
     "./src/interfaces/index.ts",
     "./src/index.ts",
+    "./src/utils/isWithinAnyPeriod.ts",
     "./src/utils/Logger.ts"
   ],
   "out": "docs",
@@ -72,5 +73,5 @@
       }
     }
   },
-  "tsconfig": "tsconfig.json",
+  "tsconfig": "tsconfig.json"
 }
